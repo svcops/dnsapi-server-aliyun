@@ -26,6 +26,7 @@ validate_param $ddns_server_token_value
 validate_param $domainName
 validate_param $rr
 
+# notice: use: /ddns/invokeGetIpByServletRequest
 json_body="{\"domainName\":\"$domainName\",\"rr\":\"$rr\"}"
 
 request_result=$(curl --connect-timeout 10 -m 20 \
