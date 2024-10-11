@@ -6,7 +6,7 @@
   * [环境变量说明](#环境变量说明)
   * [`docker-compose`部署](#docker-compose部署)
   * [`nginx`反向代理](#nginx反向代理)
-  * [`dns_curl.sh`使用](#dns_curlsh使用)
+  * [`ddns_curl.sh`使用](#ddns_curlsh使用)
 
 <!-- TOC -->
 
@@ -27,7 +27,7 @@
 
 ## `docker-compose`部署
 
-[docker-compose.yml](docker-compose.yml)
+[docker-compose.yml 文件](docker-compose.yml)
 
 ## `nginx`反向代理
 
@@ -53,7 +53,9 @@ e.g.
     }
 ```
 
-## `dns_curl.sh`使用
+## `ddns_curl.sh`使用
+
+[ddns_curl.sh 文件](ddns_curl.sh)
 
 ```shell
 ./ddns_curl.sh "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"
