@@ -20,8 +20,11 @@ public class DDnsResponse {
     private Date ts;
     private Object apiResponseBody;
 
-    public static DDnsResponse of(Object apiResponseBody) {
-        return new DDnsResponse(new Date(), apiResponseBody);
+    private String subDomain;
+    private String ipv4;
+
+    public static DDnsResponse of(Object apiResponseBody, String subDomain, String ipv4) {
+        return new DDnsResponse(new Date(), apiResponseBody, subDomain, ipv4);
     }
 
 }

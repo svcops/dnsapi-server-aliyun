@@ -61,9 +61,11 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
                 String recordId = record.getRecordId();
                 String recordIpv4 = record.getValue();
                 if (ipv4.equals(recordIpv4)) {
-                    return DDnsResponse.of("request's ipv4 equals record's value.nothing needs to be modified");
+                    return DDnsResponse.of("request.ipv4 == record.value",
+                            rr + "." + domainName, ipv4
+                    );
                 }
-                return this.update(rr, recordId, ipv4);
+                return this.update(rr, recordId, ipv4, domainName);
             }
         } else {
             delete(domainName, rr);
@@ -75,18 +77,18 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
     private DDnsResponse add(String domainName, String rr, String ipv4) {
         AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(domainName, rr, ipv4);
         if (addDomainRecordResponse.statusCode == SUCCESS_STATUS_CODE) {
-            return DDnsResponse.of(addDomainRecordResponse.getBody());
+            return DDnsResponse.of(addDomainRecordResponse.getBody(), rr + "." + domainName, ipv4);
         } else {
             throw new RuntimeException("AddDomainRecord occurred error|statusCode={}" + addDomainRecordResponse.statusCode);
         }
     }
 
-    private DDnsResponse update(String rr, String recordId, String ipv4) {
+    private DDnsResponse update(String rr, String recordId, String ipv4, String domainName) {
         UpdateDomainRecordResponse updateDomainRecordResponse = dnsApiService.updateDomainRecord(rr, recordId, ipv4);
         if (SUCCESS_STATUS_CODE != updateDomainRecordResponse.statusCode) {
             throw new RuntimeException("UpdateDomainRecord occurred error|statusCode={}" + updateDomainRecordResponse.statusCode);
         }
-        return DDnsResponse.of(updateDomainRecordResponse.getBody());
+        return DDnsResponse.of(updateDomainRecordResponse.getBody(), rr + "." + domainName, ipv4);
     }
 
     private void delete(String domainName, String rr) {
