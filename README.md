@@ -42,3 +42,21 @@ aliyun
         proxy_pass http://127.0.0.1:8080/ddns/invokeGetIpByServletRequest;
     }
 ```
+
+## dns_curl.sh 使用
+
+```shell
+./ddns_curl.sh "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"
+```
+
+- `dns_server_api`： dns-server 的 api
+- `access-token_key` access-token 的 key
+- `access-token_value` access-token 的 值
+- `domainName` 域名
+- `rr` 解析记录
+
+**结合linux的定时任务(e.g. 每5分钟执行)**
+
+```shell
+*/5 * * * * /bin/bash /path_to/ddns_curl.sh  "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>" >> path_to_log.log
+```
