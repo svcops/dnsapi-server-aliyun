@@ -58,5 +58,5 @@ aliyun
 **结合linux的定时任务(e.g. 每5分钟执行)**
 
 ```shell
-*/5 * * * * /bin/bash /path_to/ddns_curl.sh  "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>" >> path_to_log.log
+*/5 * * * * bash /opt/ddns_curl/ddns_curl.sh "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>" >>/opt/ddns_curl/ddns.log
 ```
