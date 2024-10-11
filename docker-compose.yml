@@ -1,6 +1,6 @@
 services:
   ddns-server:
-    image: registry.cn-shanghai.aliyuncs.com/iproute/ddns-server-aliyun
+    image: registry.cn-shanghai.aliyuncs.com/iproute/ddns-server
     container_name: ddns-server-aliyun
     ports:
       - "8080:8080"

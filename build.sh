@@ -30,7 +30,7 @@ version="latest"
 #version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
 
 bash <(curl $ROOT_URI/docker/build.sh) \
-  -i "$registry/ddns-server-aliyun" \
+  -i "$registry/iproute/ddns-server" \
   -v "$version" \
   -r "false" \
   -p "true"
