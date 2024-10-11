@@ -1,3 +1,19 @@
 # ddns server
 
 aliyun
+
+## 环境变量说明
+
+| 环境变量                            | 说明                           | 示例值                               |
+|---------------------------------|------------------------------|-----------------------------------|
+| JAVA_OPTIONS                    | java启动参数                     | `-Xmx64M`                         |
+| SERVER_PORT                     | springmvc端口                  | `8080`                            |
+| ACCESS_TOKEN_KEY                | ddns-server的token header的key | `access-token`                    |
+| ACCESS_TOKEN_LIST               | ddns-server的token header的值列表 | `xxx,yyy,zzz`                     |
+| ENDPOINT                        | 请求API                        | `alidns.cn-shanghai.aliyuncs.com` |
+| ALIBABA_CLOUD_ACCESS_KEY_ID     | 阿里云AccessKeyId               | 无                                 |
+| ALIBABA_CLOUD_ACCESS_KEY_SECRET | 阿里云AccessKeySecret           | 无                                 |
+| DDNS_DOMAIN_ACCESS_CONTROL_LIST | 阿里云解析的域名子集，用作控制              | `a.com,b.com `                    |
+| DDNS_EXCLUDE_RR_LIST            | 不允许的域名解析列表                   | `ddns,api`                        |
+| DDNS_TEST_SUBDOMAIN             | 测试用例使用                       | `a.b.com `                        |
+
