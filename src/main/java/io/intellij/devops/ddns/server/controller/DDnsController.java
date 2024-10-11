@@ -30,7 +30,7 @@ import static io.intellij.devops.ddns.server.utils.HttpServletRequestUtils.isVal
  */
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping("/")
+@RequestMapping("/ddns")
 @Slf4j
 public class DDnsController {
     private final DDnsService dDnsService;
@@ -41,7 +41,7 @@ public class DDnsController {
         return "Hello,DDNSServer!";
     }
 
-    @PostMapping("/ddns")
+    @PostMapping("/invoke")
     public Result<DDnsResponse> ddns(@RequestBody DDnsRequest request) {
         validate(request.getDomainName(), request.getRr());
         validateIpv4(request.getIpv4());
@@ -50,7 +50,7 @@ public class DDnsController {
         return Result.ok(dDnsService.ddns(request.getDomainName(), request.getRr(), request.getIpv4()));
     }
 
-    @PostMapping("/ddnsGetIpByServletRequest")
+    @PostMapping("/invokeGetIpByServletRequest")
     public Result<DDnsResponse> ddnsGetIpByServletRequest(@RequestBody DDnsRequest request, HttpServletRequest httpServletRequest) {
         return ddns(DDnsRequest.builder()
                 .domainName(request.getDomainName())
