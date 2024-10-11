@@ -17,3 +17,28 @@ aliyun
 | DDNS_EXCLUDE_RR_LIST            | 不允许的域名解析列表                   | `ddns,api`                        |
 | DDNS_TEST_SUBDOMAIN             | 测试用例使用                       | `a.b.com `                        |
 
+## docker-compose部署
+
+[docker-compose.yml](docker-compose.yml)
+
+## nginx 反向代理参考
+
+```nginx configuration
+    location = /api/ddns/invoke {
+        proxy_http_version 1.1;
+        proxy_set_header Host $server_name:$server_port;
+        proxy_set_header X-Forwarded-Host $http_host; # necessary for proper absolute redirects and TeamCity CSRF check
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_pass http://127.0.0.1:8080/ddns/invoke;
+    }
+
+    location = /api/ddns/invokeGetIpByServletRequest {
+        proxy_http_version 1.1;
+        proxy_set_header Host $server_name:$server_port;
+        proxy_set_header X-Forwarded-Host $http_host; # necessary for proper absolute redirects and TeamCity CSRF check
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_pass http://127.0.0.1:8080/ddns/invokeGetIpByServletRequest;
+    }
+```
