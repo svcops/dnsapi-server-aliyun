@@ -1,0 +1,20 @@
+services:
+  ddns-server:
+    image: registry.cn-shanghai.aliyuncs.com/iproute/ddns-server-aliyun
+    container_name: ddns-server-aliyun
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./logs:/opt/app/logs"
+    environment:
+      - TZ=Asia/Shanghai
+      - JAVA_OPTIONS=-Xmx64M
+      - SERVER_PORT=8080
+      - ACCESS_TOKEN_KEY=
+      - ACCESS_TOKEN_LIST=
+      - ENDPOINT=alidns.cn-shanghai.aliyuncs.com
+      - ALIBABA_CLOUD_ACCESS_KEY_ID=
+      - ALIBABA_CLOUD_ACCESS_KEY_SECRET=
+      - DDNS_DOMAIN_ACCESS_CONTROL_LIST=
+      - DDNS_EXCLUDE_RR_LIST=
+      - DDNS_TEST_SUBDOMAIN=
