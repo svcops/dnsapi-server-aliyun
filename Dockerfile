@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM registry.cn-shanghai.aliyuncs.com/iproute/openjdk:21-bookworm
 
 MAINTAINER "tech@intellij.io"
 
@@ -12,5 +12,3 @@ ADD build/libs/ddns-server-aliyun-1.0.0-SNAPSHOT.jar ddns-server-aliyun-1.0.0-SN
 EXPOSE 8080
 
 CMD java $JAVA_OPTIONS -jar ddns-server-aliyun-1.0.0-SNAPSHOT.jar
-
-
