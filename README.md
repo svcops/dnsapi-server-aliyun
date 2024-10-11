@@ -1,6 +1,14 @@
-# ddns server
+# ddns server aliyun
 
-aliyun
+<!-- TOC -->
+
+* [ddns server aliyun](#ddns-server-aliyun)
+  * [环境变量说明](#环境变量说明)
+  * [`docker-compose`部署](#docker-compose部署)
+  * [`nginx`反向代理](#nginx反向代理)
+  * [`dns_curl.sh`使用](#dns_curlsh使用)
+
+<!-- TOC -->
 
 ## 环境变量说明
 
@@ -17,11 +25,13 @@ aliyun
 | DDNS_EXCLUDE_RR_LIST            | 不允许的域名解析列表                   | `ddns,api`                        |
 | DDNS_TEST_SUBDOMAIN             | 测试用例使用                       | `a.b.com `                        |
 
-## docker-compose部署
+## `docker-compose`部署
 
 [docker-compose.yml](docker-compose.yml)
 
-## nginx 反向代理参考
+## `nginx`反向代理
+
+e.g.
 
 ```nginx configuration
     location = /api/ddns/invoke {
@@ -43,7 +53,7 @@ aliyun
     }
 ```
 
-## dns_curl.sh 使用
+## `dns_curl.sh`使用
 
 ```shell
 ./ddns_curl.sh "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"
