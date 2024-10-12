@@ -9,7 +9,7 @@ source <(curl -sSL $ROOT_URI/func/log.sh)
 log_info "step 1" "gradle build jar"
 
 bash <(curl $ROOT_URI/gradle/build.sh) \
-  -i "gradle:8.10.2-jdk21-jammy" \
+  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.10.2-jdk21-jammy" \
   -c "gradle_8.10.2-jdk21-jammy_cache" \
   -x "gradle clean build -x test"
 
