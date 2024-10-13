@@ -53,6 +53,41 @@ e.g.
 
 ```
 
+## DDNS HTTP 请求说明
+
+### `/ddns/invoke`
+
+```http request
+POST $ROOT_URI/ddns/invoke
+Content-Type: application/json
+access-token: <token>
+Accept: application/json
+
+{
+ "domainName": "example.com",
+ "rr": "ddns",
+ "ipv4": "127.0.0.1"
+}
+```
+
+### `/ddns/invokeGetIpAutomatic`
+
+[DDnsController.java](src/main/java/io/intellij/devops/ddns/server/controller/DDnsController.java)
+
+> 根据 HttpServletRequest 获取请求的 ip 地址
+
+```http request
+POST $ROOT_URI/ddns/invokeGetIpAutomatic
+Content-Type: application/json
+access-token: <token>
+Accept: application/json
+
+{
+ "domainName": "example.com",
+ "rr": "ddns"
+}
+```
+
 ## `ddns_curl.sh`使用
 
 > **notice**: use endpoint `/ddns/invokeGetIpAutomatic`
