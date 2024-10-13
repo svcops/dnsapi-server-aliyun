@@ -23,7 +23,6 @@
 | ALIBABA_CLOUD_ACCESS_KEY_SECRET | 阿里云AccessKeySecret           | 无                                 |
 | DDNS_DOMAIN_ACCESS_CONTROL_LIST | 阿里云解析的域名子集，用作控制              | `a.com,b.com `                    |
 | DDNS_EXCLUDE_RR_LIST            | 不允许的域名解析列表                   | `ddns,api`                        |
-| DDNS_TEST_SUBDOMAIN             | 测试用例使用                       | `a.b.com `                        |
 
 ## `docker-compose`部署
 
@@ -54,6 +53,7 @@ e.g.
 ```
 
 ## `ddns_curl.sh`使用
+
 > **notice**: use endpoint `/ddns/invokeGetIpByServletRequest`
 
 [ddns_curl.sh 文件](ddns_curl.sh)

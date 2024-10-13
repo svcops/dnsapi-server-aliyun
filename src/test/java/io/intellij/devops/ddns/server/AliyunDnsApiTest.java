@@ -8,7 +8,7 @@ import com.aliyun.teaopenapi.models.Config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.intellij.devops.ddns.server.config.properties.AccessTokenProperties;
 import io.intellij.devops.ddns.server.config.properties.AliyunProperties;
-import io.intellij.devops.ddns.server.config.properties.DdnsProperties;
+import io.intellij.devops.ddns.server.config.properties.DDnsProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AliyunDnsApiTest {
     private AccessTokenProperties accessTokenProperties;
 
     @Autowired
-    private DdnsProperties ddnsProperties;
+    private DDnsProperties ddnsProperties;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -58,9 +58,10 @@ public class AliyunDnsApiTest {
 
     @Test
     public void testDescribeDomains() throws Exception {
+        String subDomain = System.getProperty("DDNS_TEST_SUB_DOMAIN");
         Client client = createClient();
         DescribeSubDomainRecordsRequest describeSubDomainRecordsRequest = new DescribeSubDomainRecordsRequest()
-                .setSubDomain(ddnsProperties.getTestSubDomain());
+                .setSubDomain(subDomain);
         try {
             DescribeSubDomainRecordsResponse describeSubDomainRecordsResponse = client.describeSubDomainRecords(describeSubDomainRecordsRequest);
             log.info(objectMapper.writeValueAsString(describeSubDomainRecordsResponse));

@@ -15,7 +15,6 @@ import io.intellij.devops.ddns.server.config.properties.AliyunProperties;
 import io.intellij.devops.ddns.server.sevice.DnsApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

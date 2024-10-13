@@ -1,6 +1,6 @@
 package io.intellij.devops.ddns.server.controller;
 
-import io.intellij.devops.ddns.server.config.properties.DdnsProperties;
+import io.intellij.devops.ddns.server.config.properties.DDnsProperties;
 import io.intellij.devops.ddns.server.entites.DDnsRequest;
 import io.intellij.devops.ddns.server.entites.DDnsResponse;
 import io.intellij.devops.ddns.server.entites.Result;
@@ -34,7 +34,7 @@ import static io.intellij.devops.ddns.server.utils.HttpServletRequestUtils.isVal
 @Slf4j
 public class DDnsController {
     private final DDnsService dDnsService;
-    private final DdnsProperties ddnsProperties;
+    private final DDnsProperties ddnsProperties;
 
     @GetMapping("/")
     public String root() {
@@ -43,7 +43,7 @@ public class DDnsController {
 
     @PostMapping("/invoke")
     public Result<DDnsResponse> ddns(@RequestBody DDnsRequest request) {
-        validate(request.getDomainName(), request.getRr());
+        validateDomain(request.getDomainName(), request.getRr());
         validateIpv4(request.getIpv4());
 
         log.info("ddns|domainName={}|rr={}|ipv4={}", request.getDomainName(), request.getRr(), request.getIpv4());
@@ -52,14 +52,10 @@ public class DDnsController {
 
     @PostMapping("/invokeGetIpByServletRequest")
     public Result<DDnsResponse> ddnsGetIpByServletRequest(@RequestBody DDnsRequest request, HttpServletRequest httpServletRequest) {
-        return ddns(DDnsRequest.builder()
-                .domainName(request.getDomainName())
-                .rr(request.getRr())
-                .ipv4(getRequestIp(httpServletRequest))
-                .build());
+        return ddns(DDnsRequest.builder().domainName(request.getDomainName()).rr(request.getRr()).ipv4(getRequestIp(httpServletRequest)).build());
     }
 
-    private void validate(String domainName, String rr) {
+    private void validateDomain(String domainName, String rr) {
         Set<String> domainAclSet = new HashSet<>(ddnsProperties.getDomainAcl());
         if (!domainAclSet.contains(domainName)) {
             throw new RuntimeException("domain access control list does not contains domainName|domainName=" + domainName);
@@ -69,7 +65,7 @@ public class DDnsController {
         Set<String> excludeRrSet = new HashSet<>(excludeRrList);
 
         if (excludeRrSet.contains(rr)) {
-            throw new RuntimeException("rr is in exclude rr list");
+            throw new RuntimeException("request's rr has in excluded rr list");
         }
 
         if (!DomainNameUtils.validateRR(rr)) {

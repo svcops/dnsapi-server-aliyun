@@ -22,4 +22,3 @@ aliyun:
 ddns:
   domain-acl: ${DDNS_DOMAIN_ACCESS_CONTROL_LIST:}
   exclude-rr-list: ${DDNS_EXCLUDE_RR_LIST:}
-  test-sub-domain: ${DDNS_TEST_SUBDOMAIN:}

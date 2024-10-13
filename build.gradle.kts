@@ -33,6 +33,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("com.aliyun:alidns20150109:3.4.4") {
         exclude(group = "org.dom4j", module = "dom4j")

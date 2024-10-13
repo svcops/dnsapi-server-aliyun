@@ -7,7 +7,7 @@ import com.aliyun.alidns20150109.models.DescribeDomainsResponseBody;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponseBody;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
-import io.intellij.devops.ddns.server.config.properties.DdnsProperties;
+import io.intellij.devops.ddns.server.config.properties.DDnsProperties;
 import io.intellij.devops.ddns.server.entites.DDnsResponse;
 import io.intellij.devops.ddns.server.sevice.DDnsService;
 import io.intellij.devops.ddns.server.sevice.DnsApiService;
@@ -36,7 +36,7 @@ import static io.intellij.devops.ddns.server.sevice.DnsApiService.SUCCESS_STATUS
 public class DDnsServiceImpl implements DDnsService, InitializingBean {
     private final DnsApiService dnsApiService;
 
-    private final DdnsProperties ddnsProperties;
+    private final DDnsProperties ddnsProperties;
 
     @Override
     public DDnsResponse ddns(String domainName, String rr, String ipv4) {
