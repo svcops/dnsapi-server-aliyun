@@ -42,7 +42,7 @@ public class DDnsController {
     }
 
     @PostMapping("/invoke")
-    public Result<DDnsResponse> ddns(@RequestBody DDnsRequest request) {
+    public Result<DDnsResponse> invoke(@RequestBody DDnsRequest request) {
         validateDomain(request.getDomainName(), request.getRr());
         validateIpv4(request.getIpv4());
 
@@ -50,9 +50,9 @@ public class DDnsController {
         return Result.ok(dDnsService.ddns(request.getDomainName(), request.getRr(), request.getIpv4()));
     }
 
-    @PostMapping("/invokeGetIpByServletRequest")
-    public Result<DDnsResponse> ddnsGetIpByServletRequest(@RequestBody DDnsRequest request, HttpServletRequest httpServletRequest) {
-        return ddns(DDnsRequest.builder().domainName(request.getDomainName()).rr(request.getRr()).ipv4(getRequestIp(httpServletRequest)).build());
+    @PostMapping(value = {"/invokeGetIpByHttpServletRequest", "/invokeGetIpAutomatic"})
+    public Result<DDnsResponse> invokeGetIpByHttpServletRequest(@RequestBody DDnsRequest request, HttpServletRequest httpServletRequest) {
+        return invoke(DDnsRequest.builder().domainName(request.getDomainName()).rr(request.getRr()).ipv4(getRequestIp(httpServletRequest)).build());
     }
 
     private void validateDomain(String domainName, String rr) {

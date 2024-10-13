@@ -41,15 +41,25 @@ e.g.
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_pass http://127.0.0.1:8080/ddns/invoke;
     }
-
-    location = /api/ddns/invokeGetIpByServletRequest {
+    
+    location = /api/ddns/invokeGetIpAutomatic {
         proxy_http_version 1.1;
         proxy_set_header Host $server_name:$server_port;
         proxy_set_header X-Forwarded-Host $http_host; # necessary for proper absolute redirects and TeamCity CSRF check
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_pass http://127.0.0.1:8080/ddns/invokeGetIpByServletRequest;
+        proxy_pass http://127.0.0.1:8080/ddns/invokeGetIpAutomatic;
     }
+
+    location = /api/ddns/invokeGetIpByHttpServletRequest {
+        proxy_http_version 1.1;
+        proxy_set_header Host $server_name:$server_port;
+        proxy_set_header X-Forwarded-Host $http_host; # necessary for proper absolute redirects and TeamCity CSRF check
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_pass http://127.0.0.1:8080/ddns/invokeGetIpAutomatic;
+    }
+
 ```
 
 ## `ddns_curl.sh`使用
