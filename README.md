@@ -55,7 +55,7 @@ e.g.
 
 ## `ddns_curl.sh`使用
 
-> **notice**: use endpoint `/ddns/invokeGetIpByServletRequest`
+> **notice**: use endpoint `/ddns/invokeGetIpAutomatic`
 
 [ddns_curl.sh 文件](ddns_curl.sh)
 
