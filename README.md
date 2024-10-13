@@ -58,7 +58,7 @@ e.g.
 ### `/ddns/invoke`
 
 ```http request
-POST $ROOT_URI$/ddns/invoke
+POST ROOT_URI/ddns/invoke
 Content-Type: application/json
 access-token: <token>
 Accept: application/json
@@ -77,7 +77,7 @@ Accept: application/json
 > 根据 HttpServletRequest 获取请求的 ip 地址
 
 ```http request
-POST $ROOT_URI$/ddns/invokeGetIpAutomatic
+POST ROOT_URI/ddns/invokeGetIpAutomatic
 Content-Type: application/json
 access-token: <token>
 Accept: application/json
