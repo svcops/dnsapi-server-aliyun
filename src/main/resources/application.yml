@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: ddns-server
+  main:
+    banner-mode: off
   mvc:
     static-path-pattern: /statics/**
   jackson:
