@@ -7,8 +7,8 @@ import com.aliyun.alidns20150109.models.DescribeDomainsResponseBody;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponseBody;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
-import io.intellij.devops.ddns.server.config.properties.DDnsProperties;
-import io.intellij.devops.ddns.server.entites.DDnsResponse;
+import io.intellij.devops.ddns.server.config.properties.DnsApiProperties;
+import io.intellij.devops.ddns.server.entites.ddns.DDnsResponse;
 import io.intellij.devops.ddns.server.sevice.DDnsService;
 import io.intellij.devops.ddns.server.sevice.DnsApiService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ import static io.intellij.devops.ddns.server.sevice.DnsApiService.SUCCESS_STATUS
 public class DDnsServiceImpl implements DDnsService, InitializingBean {
     private final DnsApiService dnsApiService;
 
-    private final DDnsProperties ddnsProperties;
+    private final DnsApiProperties ddnsApiProperties;
 
     @Override
     public DDnsResponse ddns(String domainName, String rr, String ipv4) {
@@ -75,7 +75,7 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
 
 
     private DDnsResponse add(String domainName, String rr, String ipv4) {
-        AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(domainName, rr, ipv4);
+        AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(domainName, rr, IPV4_TYPE, ipv4);
         if (addDomainRecordResponse.statusCode == SUCCESS_STATUS_CODE) {
             return DDnsResponse.of(addDomainRecordResponse.getBody(), rr + "." + domainName, ipv4);
         } else {
@@ -84,7 +84,7 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
     }
 
     private DDnsResponse update(String rr, String recordId, String ipv4, String domainName) {
-        UpdateDomainRecordResponse updateDomainRecordResponse = dnsApiService.updateDomainRecord(rr, recordId, ipv4);
+        UpdateDomainRecordResponse updateDomainRecordResponse = dnsApiService.updateDomainRecord(rr, recordId, IPV4_TYPE, ipv4);
         if (SUCCESS_STATUS_CODE != updateDomainRecordResponse.statusCode) {
             throw new RuntimeException("UpdateDomainRecord occurred error|statusCode={}" + updateDomainRecordResponse.statusCode);
         }
@@ -112,7 +112,7 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
         }
 
         // 验证 domain-acl 的域名列表
-        List<String> domainAcl = ddnsProperties.getDomainAcl();
+        List<String> domainAcl = ddnsApiProperties.getDomainAcl();
         if (CollectionUtils.isEmpty(domainAcl)) {
             throw new RuntimeException("domain acl is empty");
         }

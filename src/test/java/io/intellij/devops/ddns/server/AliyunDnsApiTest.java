@@ -8,7 +8,7 @@ import com.aliyun.teaopenapi.models.Config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.intellij.devops.ddns.server.config.properties.AccessTokenProperties;
 import io.intellij.devops.ddns.server.config.properties.AliyunProperties;
-import io.intellij.devops.ddns.server.config.properties.DDnsProperties;
+import io.intellij.devops.ddns.server.config.properties.DnsApiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AliyunDnsApiTest {
     private AccessTokenProperties accessTokenProperties;
 
     @Autowired
-    private DDnsProperties ddnsProperties;
+    private DnsApiProperties ddnsApiProperties;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -40,7 +40,7 @@ public class AliyunDnsApiTest {
     public void testGetProperties() {
         log.info("aliyun properties = {}", aliyunProperties);
         log.info("access token properties = {}", accessTokenProperties);
-        log.info("ddns properties = {}", ddnsProperties);
+        log.info("ddns properties = {}", ddnsApiProperties);
     }
 
     private Client createClient() throws Exception {

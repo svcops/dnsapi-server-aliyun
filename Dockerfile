@@ -7,8 +7,8 @@ LABEL email="tech@intellij.io" \
 
 WORKDIR /opt/app
 
-ADD build/libs/ddns-server-aliyun-1.0.0-SNAPSHOT.jar ddns-server-aliyun-1.0.0-SNAPSHOT.jar
+ADD build/libs/dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar
 
 EXPOSE 8080
 
-CMD java $JAVA_OPTIONS -jar ddns-server-aliyun-1.0.0-SNAPSHOT.jar
+CMD java $JAVA_OPTIONS -jar dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar

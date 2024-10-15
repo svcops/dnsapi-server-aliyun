@@ -16,9 +16,9 @@ import java.util.List;
  */
 @ToString
 @Data
-@ConfigurationProperties(prefix = "ddns")
+@ConfigurationProperties(prefix = "dns-api")
 @Validated
-public class DDnsProperties {
+public class DnsApiProperties {
     // domain access control list
     @NotEmpty(message = "domain acl must not be empty collection")
     private List<String> domainAcl;

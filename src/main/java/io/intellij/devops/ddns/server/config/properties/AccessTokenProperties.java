@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author tech@intellij.io
  */
 @ConfigurationProperties(prefix = "service")
+@Validated
 @Data
 public class AccessTokenProperties {
     @NotBlank(message = "accessTokenHeaderKey must not be blank")

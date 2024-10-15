@@ -1,16 +1,15 @@
 package io.intellij.devops.ddns.server.controller;
 
-import io.intellij.devops.ddns.server.config.properties.DDnsProperties;
-import io.intellij.devops.ddns.server.entites.DDnsRequest;
-import io.intellij.devops.ddns.server.entites.DDnsResponse;
+import io.intellij.devops.ddns.server.config.properties.DnsApiProperties;
 import io.intellij.devops.ddns.server.entites.Result;
+import io.intellij.devops.ddns.server.entites.ddns.DDnsRequest;
+import io.intellij.devops.ddns.server.entites.ddns.DDnsResponse;
 import io.intellij.devops.ddns.server.sevice.DDnsService;
 import io.intellij.devops.ddns.server.utils.DomainNameUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +33,7 @@ import static io.intellij.devops.ddns.server.utils.HttpServletRequestUtils.isVal
 @Slf4j
 public class DDnsController {
     private final DDnsService dDnsService;
-    private final DDnsProperties ddnsProperties;
-
-    @GetMapping("/")
-    public String root() {
-        return "Hello,DDNSServer!";
-    }
+    private final DnsApiProperties ddnsApiProperties;
 
     @PostMapping("/invoke")
     public Result<DDnsResponse> invoke(@RequestBody DDnsRequest request) {
@@ -56,12 +50,12 @@ public class DDnsController {
     }
 
     private void validateDomain(String domainName, String rr) {
-        Set<String> domainAclSet = new HashSet<>(ddnsProperties.getDomainAcl());
+        Set<String> domainAclSet = new HashSet<>(ddnsApiProperties.getDomainAcl());
         if (!domainAclSet.contains(domainName)) {
             throw new RuntimeException("domain access control list does not contains domainName|domainName=" + domainName);
         }
 
-        List<String> excludeRrList = ddnsProperties.getExcludeRrList();
+        List<String> excludeRrList = ddnsApiProperties.getExcludeRrList();
         Set<String> excludeRrSet = new HashSet<>(excludeRrList);
 
         if (excludeRrSet.contains(rr)) {

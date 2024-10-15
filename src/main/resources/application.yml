@@ -19,6 +19,6 @@ aliyun:
   access-key-id: ${ALIBABA_CLOUD_ACCESS_KEY_ID:}
   access-key-secret: ${ALIBABA_CLOUD_ACCESS_KEY_SECRET:}
 
-ddns:
-  domain-acl: ${DDNS_DOMAIN_ACCESS_CONTROL_LIST:}
-  exclude-rr-list: ${DDNS_EXCLUDE_RR_LIST:}
+dns-api:
+  domain-acl: ${DNS_API_DOMAIN_ACCESS_CONTROL_LIST:}
+  exclude-rr-list: ${DNS_API_EXCLUDE_RR_LIST:}

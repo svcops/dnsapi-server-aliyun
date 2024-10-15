@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author tech@intellij.io
  */
 @SpringBootApplication
-public class DDnsServerApplication {
+public class DnsApiServerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DDnsServerApplication.class, args);
+        SpringApplication.run(DnsApiServerApplication.class, args);
     }
 }

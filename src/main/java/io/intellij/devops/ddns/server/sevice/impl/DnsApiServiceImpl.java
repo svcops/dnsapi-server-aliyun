@@ -103,7 +103,7 @@ public class DnsApiServiceImpl implements DnsApiService {
     }
 
     @Override
-    public AddDomainRecordResponse addDomainRecord(String domainName, String rr, String ipv4) {
+    public AddDomainRecordResponse addDomainRecord(String domainName, String rr, String type, String ipv4) {
         /*
             --DomainName
             --RR
@@ -111,12 +111,12 @@ public class DnsApiServiceImpl implements DnsApiService {
             --Value
          */
         AddDomainRecordRequest request = new AddDomainRecordRequest()
-                .setDomainName(domainName).setRR(rr).setType("A").setValue(ipv4);
+                .setDomainName(domainName).setRR(rr).setType(type).setValue(ipv4);
         return addDomainRecord(request);
     }
 
     @Override
-    public UpdateDomainRecordResponse updateDomainRecord(String rr, String recordId, String ipv4) {
+    public UpdateDomainRecordResponse updateDomainRecord(String rr, String recordId, String type, String ipv4) {
         /*
             --RR
             --RecordId
@@ -124,7 +124,7 @@ public class DnsApiServiceImpl implements DnsApiService {
             --Value
          */
         UpdateDomainRecordRequest request = new UpdateDomainRecordRequest()
-                .setRR(rr).setRecordId(recordId).setType("A").setValue(ipv4);
+                .setRR(rr).setRecordId(recordId).setType(type).setValue(ipv4);
         return updateDomainRecord(request);
     }
 

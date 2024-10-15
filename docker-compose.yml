@@ -1,6 +1,6 @@
 services:
   ddns-server:
-    image: registry.cn-shanghai.aliyuncs.com/iproute/ddns-server-aliyun
+    image: registry.cn-shanghai.aliyuncs.com/iproute/dnsapi-server-aliyun
     container_name: ddns-server-aliyun
     ports:
       - "8080:8080"
@@ -16,5 +16,5 @@ services:
       - ENDPOINT=alidns.cn-shanghai.aliyuncs.com
       - ALIBABA_CLOUD_ACCESS_KEY_ID=
       - ALIBABA_CLOUD_ACCESS_KEY_SECRET=
-      - DDNS_DOMAIN_ACCESS_CONTROL_LIST=
-      - DDNS_EXCLUDE_RR_LIST=
+      - DNS_API_DOMAIN_ACCESS_CONTROL_LIST=
+      - DNS_API_EXCLUDE_RR_LIST=

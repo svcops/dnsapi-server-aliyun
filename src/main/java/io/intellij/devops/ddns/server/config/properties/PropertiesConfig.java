@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author tech@intellij.io
  */
-@EnableConfigurationProperties(value = {AliyunProperties.class, AccessTokenProperties.class, DDnsProperties.class})
+@EnableConfigurationProperties(value = {AliyunProperties.class, AccessTokenProperties.class, DnsApiProperties.class})
 @Configuration
 public class PropertiesConfig {
 }

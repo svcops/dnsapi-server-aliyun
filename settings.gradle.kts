@@ -1,1 +1,1 @@
-rootProject.name = "ddns-server-aliyun"
+rootProject.name = "dnsapi-server-aliyun"

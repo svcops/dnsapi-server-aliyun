@@ -1,4 +1,4 @@
-package io.intellij.devops.ddns.server.entites;
+package io.intellij.devops.ddns.server.entites.ddns;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

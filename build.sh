@@ -13,7 +13,7 @@ bash <(curl $ROOT_URI/gradle/build.sh) \
   -c "gradle_8.10.2-jdk21-jammy_cache" \
   -x "gradle clean build -x test"
 
-jar_name="ddns-server-aliyun-1.0.0-SNAPSHOT.jar"
+jar_name="dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar"
 
 if [ ! -f "build/libs/$jar_name" ]; then
   log "validate" "$jar_name 不存在，打包失败，退出"
@@ -30,7 +30,7 @@ version="latest"
 #version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
 
 bash <(curl $ROOT_URI/docker/build.sh) \
-  -i "$registry/iproute/ddns-server-aliyun" \
+  -i "$registry/iproute/dnsapi-server-aliyun" \
   -v "$version" \
   -r "false" \
   -p "true"

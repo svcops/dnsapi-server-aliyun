@@ -31,9 +31,9 @@ public interface DnsApiService {
 
     DescribeSubDomainRecordsResponse describeSubDomainRecords(String subDomain);
 
-    AddDomainRecordResponse addDomainRecord(String domainName, String rr, String ipv4);
+    AddDomainRecordResponse addDomainRecord(String domainName, String rr, String type, String ipv4);
 
-    UpdateDomainRecordResponse updateDomainRecord(String rr, String recordId, String ipv4);
+    UpdateDomainRecordResponse updateDomainRecord(String rr, String recordId, String type, String ipv4);
 
     DeleteSubDomainRecordsResponse deleteSubDomainRecords(String domainName, String rr);
 
