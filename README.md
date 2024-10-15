@@ -2,10 +2,13 @@
 
 <!-- TOC -->
 
-* [ddns server aliyun](#ddns-server-aliyun)
+* [dnsapi server aliyun](#dnsapi-server-aliyun)
   * [环境变量说明](#环境变量说明)
   * [`docker-compose`部署](#docker-compose部署)
   * [`nginx`反向代理](#nginx反向代理)
+  * [DDNS HTTP 请求说明](#ddns-http-请求说明)
+    * [`/ddns/invoke`](#ddnsinvoke)
+    * [`/ddns/invokeGetIpAutomatic`](#ddnsinvokegetipautomatic)
   * [`ddns_curl.sh`使用](#ddns_curlsh使用)
 
 <!-- TOC -->
