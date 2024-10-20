@@ -8,13 +8,9 @@ source <(curl -sSL $ROOT_URI/func/log.sh)
 
 log_info "build" "build native file"
 
-#bash <(curl $ROOT_URI/gradle/build.sh) \
-#  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
-#  -c "8.9-jdk21-graal-jammy-jammy_cache" \
-#  -x "gradle clean build -x test -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true --info"
-
-# https://quarkus.io/guides/config#package-and-run-the-application
 bash <(curl $ROOT_URI/gradle/build.sh) \
   -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
   -c "8.9-jdk21-graal-jammy-jammy_cache" \
-  -x "gradle clean build -Dquarkus.native.enabled=true --info -x test"
+  -x "gradle clean build -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true --info -x test"
+
+# https://quarkus.io/guides/config#package-and-run-the-application

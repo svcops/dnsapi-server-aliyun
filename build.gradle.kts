@@ -55,13 +55,15 @@ dependencies {
     implementation("org.apache.commons:commons-collections4:4.5.0-M2")
 
     implementation("com.aliyun:alidns20150109:3.4.4") {
-        exclude(group = "org.dom4j", module = "dom4j")
+        // exclude(group = "org.dom4j", module = "dom4j")
     }
 }
+
 
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
 }
+
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
