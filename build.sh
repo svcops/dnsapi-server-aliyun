@@ -8,17 +8,14 @@ source <(curl -sSL $ROOT_URI/func/log.sh)
 
 log_info "build" "build quarkus run file"
 
-#bash <(curl $ROOT_URI/gradle/build.sh) \
-#  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
-#  -c "8.9-jdk21-graal-jammy-jammy_cache" \
-#  -x "gradle clean build -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true --info -x test"
-
-# https://quarkus.io/guides/config#package-and-run-the-application
-
 bash <(curl $ROOT_URI/gradle/build.sh) \
   -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
   -c "8.9-jdk21-graal-jammy_cache" \
   -x "gradle clean build -x test --info"
+
+#  -x "gradle clean build -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true --info -x test"
+# 阿里云SDK有问题，构建不了native文件
+# https://quarkus.io/guides/config#package-and-run-the-application
 
 run_file="quarkus-run.jar"
 
@@ -30,9 +27,7 @@ fi
 log "step 2" "docker build and push"
 
 registry="registry.cn-shanghai.aliyuncs.com"
-#timestamp_tag=$(date +"%Y-%m-%d_%H-%M-%S")
-#version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
-version="quarkus"
+version="quarkus-app"
 
 bash <(curl $ROOT_URI/docker/build.sh) \
   -f "Dockerfile" \
