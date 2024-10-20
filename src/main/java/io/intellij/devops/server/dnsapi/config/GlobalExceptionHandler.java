@@ -17,7 +17,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception e) {
-        log.error("catch exception|{}", e.getMessage());
+        log.error("catch exception|{}", e.getMessage(), e);
         return Response.ok().entity(Result.fail(e.getMessage())).build();
     }
 

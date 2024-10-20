@@ -17,8 +17,7 @@ bash <(curl $ROOT_URI/gradle/build.sh) \
 
 native_file="dnsapi-server-aliyun-1.0-SNAPSHOT-runner"
 
-if [ ! -f $native_file ]; then
+if [ ! -f build/$native_file ]; then
   log_error "build native" "build native file ($native_file) failed"
   exit 1
 fi
-
