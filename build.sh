@@ -19,7 +19,7 @@ bash <(curl $ROOT_URI/gradle/build.sh) \
 
 run_file="quarkus-run.jar"
 
-if [ ! -f quarkus-app/$run_file ]; then
+if [ ! -f build/quarkus-app/$run_file ]; then
   log_error "build app" "build quarkus-app file ($run_file) failed"
   exit 1
 fi
