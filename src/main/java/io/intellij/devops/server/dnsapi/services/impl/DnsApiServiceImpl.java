@@ -49,7 +49,9 @@ public class DnsApiServiceImpl implements DnsApiService {
     @Override
     public DescribeDomainsResponse describeDomains() {
         try {
-            return getClient().describeDomains(new DescribeDomainsRequest());
+            Client client = getClient();
+            log.info("describeDomains|client={}", client);
+            return client.describeDomains(new DescribeDomainsRequest());
         } catch (Exception e) {
             log.error("describeDomains|{}", e.getMessage());
             throw new RuntimeException(e);
