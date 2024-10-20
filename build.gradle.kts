@@ -61,7 +61,7 @@ dependencies {
         exclude(group = "org.dom4j", module = "dom4j")
     }
     // https://mvnrepository.com/artifact/org.dom4j/dom4j
-    implementation("org.dom4j:dom4j:2.1.4")
+    // implementation("org.dom4j:dom4j:2.1.4")
 
 }
 

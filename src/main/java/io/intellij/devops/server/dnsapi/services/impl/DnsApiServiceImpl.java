@@ -15,7 +15,6 @@ import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 

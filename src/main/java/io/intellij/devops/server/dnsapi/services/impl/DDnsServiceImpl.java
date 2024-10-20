@@ -11,10 +11,10 @@ import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import jakarta.annotation.PostConstruct;
+import io.quarkus.runtime.ShutdownEvent;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
@@ -104,7 +104,7 @@ public class DDnsServiceImpl implements DDnsService {
     }
 
 
-    void init() {
+    void validate(@Observes ShutdownEvent ev) {
         log.info("validate ddns configuration");
         DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
         if (SUCCESS_STATUS_CODE != describeDomainsResponse.statusCode) {

@@ -11,6 +11,8 @@ quarkus:
       rotation:
         max-file-size: 20M
         file-suffix: .yyyy-MM-dd
+  native:
+    additional-build-args: --report-unsupported-elements-at-runtime,--allow-incomplete-classpath
 
 io:
   quarkus:
