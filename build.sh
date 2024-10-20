@@ -17,13 +17,13 @@ log_info "build" "build quarkus run file"
 
 bash <(curl $ROOT_URI/gradle/build.sh) \
   -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
-  -c "8.9-jdk21-graal-jammy-jammy_cache" \
-  -x "gradle clean build -x test"
+  -c "8.9-jdk21-graal-jammy_cache" \
+  -x "gradle clean build -x test --info"
 
 run_file="quarkus-run.jar"
 
 if [ ! -f quarkus-app/$run_file ]; then
-  log_error "build native" "build native file ($run_file) failed"
+  log_error "build app" "build quarkus-app file ($run_file) failed"
   exit 1
 fi
 
