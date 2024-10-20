@@ -56,7 +56,7 @@ public class DDnsServiceImpl implements DDnsService {
             return add(domainName, rr, ipv4);
         } else if (totalCount == 1) {
             DescribeSubDomainRecordsResponseBody.DescribeSubDomainRecordsResponseBodyDomainRecords domainRecords = describeSubDomainRecordsResponseBody.getDomainRecords();
-            DescribeSubDomainRecordsResponseBody.DescribeSubDomainRecordsResponseBodyDomainRecordsRecord record = domainRecords.record.getFirst();
+            DescribeSubDomainRecordsResponseBody.DescribeSubDomainRecordsResponseBodyDomainRecordsRecord record = domainRecords.record.get(0);
             if (!"A".equals(record.getType())) {
                 log.error("唯一的一条记录不是A记录，作为DDNS的子域名，保持一条记录方便操作，因此直接删除所有记录并重新添加");
                 delete(domainName, rr);

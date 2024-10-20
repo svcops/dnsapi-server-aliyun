@@ -7,8 +7,8 @@ group = "io.intellij.devops.ddns"
 version = "1.0-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -58,14 +58,13 @@ dependencies {
     implementation("org.apache.commons:commons-collections4:4.5.0-M2")
 
     implementation("com.aliyun:alidns20150109:3.4.4") {
-        // exclude(group = "org.dom4j", module = "dom4j")
-        exclude(group = "com.aliyun", module = "tea-xml")
+        exclude(group = "org.dom4j", module = "dom4j")
+        // exclude(group = "com.aliyun", module = "tea-xml")
     }
     // https://mvnrepository.com/artifact/org.dom4j/dom4j
-    // implementation("org.dom4j:dom4j:2.1.4")
+    implementation("org.dom4j:dom4j:2.1.4")
 
 }
-
 
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
