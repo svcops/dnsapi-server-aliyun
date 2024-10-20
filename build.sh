@@ -14,3 +14,11 @@ bash <(curl $ROOT_URI/gradle/build.sh) \
   -x "gradle clean build -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true --info -x test"
 
 # https://quarkus.io/guides/config#package-and-run-the-application
+
+native_file="dnsapi-server-aliyun-1.0-SNAPSHOT-runner"
+
+if [ ! -f $native_file ]; then
+  log_error "build native" "build native file ($native_file) failed"
+  exit 1
+fi
+
