@@ -33,6 +33,7 @@ public class DnsApiServiceImpl implements DnsApiService {
 
     private Client getClient() {
         try {
+            log.info("get client|accessKeyId={}|accessKeySecret={}", aliyunProperties.getAccessKeyId(), aliyunProperties.getAccessKeySecret());
             com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                     .setAccessKeyId(aliyunProperties.getAccessKeyId())
                     .setAccessKeySecret(aliyunProperties.getAccessKeySecret());
