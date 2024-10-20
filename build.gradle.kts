@@ -1,63 +1,72 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.3.4"
-    id("io.spring.dependency-management") version "1.1.6"
+    id("io.quarkus")
 }
 
 group = "io.intellij.devops.ddns"
-version = "1.0.0-SNAPSHOT"
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
+version = "1.0-SNAPSHOT"
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-
-    testCompileOnly {
-        extendsFrom(configurations.testAnnotationProcessor.get())
-    }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
     maven { url = uri("https://maven.aliyun.com/repository/public/") }
 }
 
+
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+    testCompileOnly {
+        extendsFrom(configurations.testAnnotationProcessor.get())
+    }
+}
+
+val quarkusPlatformGroupId: String by project
+val quarkusPlatformArtifactId: String by project
+val quarkusPlatformVersion: String by project
+
 dependencies {
-    // implementation("org.springframework.boot:spring-boot-starter-web") {
-    //     exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
-    // }
+    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
+    implementation("io.quarkus:quarkus-resteasy")
+    implementation("io.quarkus:quarkus-resteasy-jackson")
 
-    // implementation("org.springframework.boot:spring-boot-starter-jetty")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
+    compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
 
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+    // 更高性能的响应式
+    // implementation("io.quarkus:quarkus-rest")
+    // implementation("io.quarkus:quarkus-rest-jackson")
+
+    implementation("io.quarkus:quarkus-arc")
+    implementation("io.quarkus:quarkus-config-yaml")
+    implementation("io.quarkus:quarkus-hibernate-validator")
+
+    implementation("io.quarkiverse.logging.logback:quarkus-logging-logback:1.1.2")
+
+    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.rest-assured:rest-assured")
+
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.32")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    implementation("org.apache.commons:commons-collections4:4.5.0-M2")
 
     implementation("com.aliyun:alidns20150109:3.4.4") {
         exclude(group = "org.dom4j", module = "dom4j")
     }
-
-    implementation("org.jetbrains:annotations:24.1.0")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
-
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+    systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
+}
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add("-parameters")
 }

@@ -1,26 +1,19 @@
-server:
-  port: ${SERVER_PORT:8080}
-
-spring:
-  application:
-    name: ddns-server
-  main:
-    banner-mode: off
-  mvc:
-    static-path-pattern: /statics/**
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss.SSS
-    time-zone: GMT+8
+quarkus:
+  http:
+    port: 8080
+#  log:
+#    handler-stdout: false
+#    handler-file: false
 
 service:
-  access-token-header-key: ${ACCESS_TOKEN_KEY:access-token}
-  access-token-list: ${ACCESS_TOKEN_LIST:hello,ddns}
+  accessTokenHeaderKey: ${ACCESS_TOKEN_KEY:access-token}
+  accessTokenList: ${ACCESS_TOKEN_LIST:hello,ddns}
 
 aliyun:
   endpoint: ${ENDPOINT:alidns.cn-shanghai.aliyuncs.com}
-  access-key-id: ${ALIBABA_CLOUD_ACCESS_KEY_ID:}
-  access-key-secret: ${ALIBABA_CLOUD_ACCESS_KEY_SECRET:}
+  accessKeyId: ${ALIBABA_CLOUD_ACCESS_KEY_ID:}
+  accessKeySecret: ${ALIBABA_CLOUD_ACCESS_KEY_SECRET:}
 
 dns-api:
-  domain-acl: ${DNS_API_DOMAIN_ACCESS_CONTROL_LIST:}
-  exclude-rr-list: ${DNS_API_EXCLUDE_RR_LIST:}
+  domainAcl: ${DNS_API_DOMAIN_ACCESS_CONTROL_LIST:}
+  excludeRrList: ${DNS_API_EXCLUDE_RR_LIST:}

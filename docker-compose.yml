@@ -9,7 +9,6 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
-      - JAVA_OPTIONS=-Xmx64M
       - SERVER_PORT=8080
       - ACCESS_TOKEN_KEY=
       - ACCESS_TOKEN_LIST=

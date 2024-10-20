@@ -1,4 +1,4 @@
-package io.intellij.devops.server.dnsapi.controller;
+package io.intellij.devops.server.dnsapi;
 
 import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.entities.Result;
@@ -6,37 +6,48 @@ import io.intellij.devops.server.dnsapi.entities.ddns.DDnsRequest;
 import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.utils.DomainNameUtils;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import io.vertx.ext.web.RoutingContext;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static io.intellij.devops.server.dnsapi.utils.HttpServletRequestUtils.getRequestIp;
-import static io.intellij.devops.server.dnsapi.utils.HttpServletRequestUtils.isValidIPv4;
+import static io.intellij.devops.server.dnsapi.utils.RequestUtils.getRequestIp;
+import static org.bouncycastle.util.IPAddress.isValidIPv4;
 
 /**
- * DDnsController
+ * DDnsResource
  *
  * @author tech@intellij.io
  */
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@RestController
-@RequestMapping("/ddns")
+@Path("/ddns")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Slf4j
-public class DDnsController {
-    private final DDnsService dDnsService;
-    private final DnsApiProperties dnsApiProperties;
+public class DDnsResource {
 
-    @PostMapping("/invoke")
-    public Result<DDnsResponse> invoke(@RequestBody DDnsRequest request) {
+    @Inject
+    DDnsService dDnsService;
+
+    @Inject
+    @ConfigProperties
+    DnsApiProperties dnsApiProperties;
+
+    @Context
+    RoutingContext routingContext;
+
+    @Path("/invoke")
+    @POST
+    public Result<DDnsResponse> invoke(DDnsRequest request) {
         validateDomain(request.getDomainName(), request.getRr());
         validateIpv4(request.getIpv4());
 
@@ -44,9 +55,14 @@ public class DDnsController {
         return Result.ok(dDnsService.ddns(request.getDomainName(), request.getRr(), request.getIpv4()));
     }
 
-    @PostMapping(value = {"/invokeGetIpAutomatic", "/invokeGetIpByHttpServletRequest"})
-    public Result<DDnsResponse> invokeGetIpByHttpServletRequest(@RequestBody DDnsRequest request, HttpServletRequest httpServletRequest) {
-        return invoke(DDnsRequest.builder().domainName(request.getDomainName()).rr(request.getRr()).ipv4(getRequestIp(httpServletRequest)).build());
+    @Path("/invokeGetIpAutomatic")
+    @POST
+    public Result<DDnsResponse> invokeGetIpAutomatic(DDnsRequest request) {
+        return this.invoke(DDnsRequest.builder()
+                .domainName(request.getDomainName())
+                .rr(request.getRr())
+                .ipv4(getRequestIp(routingContext.request())).build()
+        );
     }
 
     private void validateDomain(String domainName, String rr) {

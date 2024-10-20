@@ -13,21 +13,23 @@ import com.aliyun.alidns20150109.models.UpdateDomainRecordRequest;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
 import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import lombok.RequiredArgsConstructor;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 /**
  * DnsApiServiceImpl
  *
  * @author tech@intellij.io
  */
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Service
+@ApplicationScoped
 @Slf4j
 public class DnsApiServiceImpl implements DnsApiService {
-    private final AliyunProperties aliyunProperties;
+
+    @Inject
+    @ConfigProperties
+    AliyunProperties aliyunProperties;
 
     private Client getClient() {
         try {

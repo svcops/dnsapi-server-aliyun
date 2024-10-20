@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import java.util.List;
 
@@ -16,8 +15,7 @@ import java.util.List;
  */
 @ToString
 @Data
-@ConfigurationProperties(prefix = "dns-api")
-@Validated
+@ConfigProperties(prefix = "dns-api")
 public class DnsApiProperties {
     // domain access control list
     @NotEmpty(message = "domain acl must not be empty collection")

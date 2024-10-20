@@ -9,10 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.intellij.devops.server.dnsapi.config.properties.AccessTokenProperties;
 import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
 import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * AliyunDnsApiTest
@@ -21,20 +22,23 @@ import org.springframework.boot.test.context.SpringBootTest;
  *
  * @author tech@intellij.io
  */
-@SpringBootTest
+@QuarkusTest
 @Slf4j
 public class AliyunDnsApiTest {
-    @Autowired
-    private AliyunProperties aliyunProperties;
 
-    @Autowired
-    private AccessTokenProperties accessTokenProperties;
+    @Inject
+    @ConfigProperties
+    AliyunProperties aliyunProperties;
+    @Inject
+    @ConfigProperties
+    AccessTokenProperties accessTokenProperties;
 
-    @Autowired
-    private DnsApiProperties ddnsApiProperties;
+    @Inject
+    @ConfigProperties
+    DnsApiProperties ddnsApiProperties;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Inject
+    ObjectMapper objectMapper;
 
     @Test
     public void testGetProperties() {

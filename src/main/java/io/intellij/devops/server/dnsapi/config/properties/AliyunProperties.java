@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 /**
  * AliyunProperties
@@ -14,8 +13,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @ToString
 @Data
-@ConfigurationProperties(prefix = "aliyun")
-@Validated
+@ConfigProperties(prefix = "aliyun")
 public class AliyunProperties {
     @NotBlank(message = "endpoint must not be blank")
     private String endpoint;

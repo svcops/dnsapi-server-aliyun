@@ -11,12 +11,13 @@ import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import lombok.RequiredArgsConstructor;
+import io.quarkus.runtime.StartupEvent;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,13 +31,16 @@ import static io.intellij.devops.server.dnsapi.services.DnsApiService.SUCCESS_ST
  *
  * @author tech@intellij.io
  */
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Service
+@ApplicationScoped
 @Slf4j
-public class DDnsServiceImpl implements DDnsService, InitializingBean {
-    private final DnsApiService dnsApiService;
+public class DDnsServiceImpl implements DDnsService {
 
-    private final DnsApiProperties dnsApiProperties;
+    @Inject
+    DnsApiService dnsApiService;
+
+    @Inject
+    @ConfigProperties
+    DnsApiProperties dnsApiProperties;
 
     @Override
     public DDnsResponse ddns(String domainName, String rr, String ipv4) {
@@ -99,8 +103,8 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
         log.warn("删除DDNS子域名的所有解析记录|domainName={} rr={}", domainName, rr);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+
+    void onStart(@Observes StartupEvent ev) {
         DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
         if (SUCCESS_STATUS_CODE != describeDomainsResponse.statusCode) {
             throw new RuntimeException("DescribeDomains occurred error|statusCode={}" + describeDomainsResponse.statusCode);
@@ -121,7 +125,10 @@ public class DDnsServiceImpl implements DDnsService, InitializingBean {
         Set<String> aclDomains = new HashSet<>(domainAcl);
 
         if (!accountDomains.containsAll(aclDomains)) {
-            throw new RuntimeException("域名控制列表的域名包含阿里云账号中不存在的域名");
+            throw new RuntimeException("域名控制列表的域名包含阿里云账号中不存在的域名|domainAcl=" + domainList);
+        } else {
+            log.info("domain access list|{}", aclDomains);
         }
     }
+
 }
