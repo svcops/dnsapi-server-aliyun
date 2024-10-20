@@ -27,7 +27,7 @@ fi
 log "step 2" "docker build and push"
 
 registry="registry.cn-shanghai.aliyuncs.com"
-version="quarkus-app"
+version="latest"
 
 bash <(curl $ROOT_URI/docker/build.sh) \
   -f "Dockerfile" \
