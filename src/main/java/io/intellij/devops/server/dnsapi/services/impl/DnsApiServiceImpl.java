@@ -13,8 +13,8 @@ import com.aliyun.alidns20150109.models.UpdateDomainRecordRequest;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
 import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 
@@ -23,7 +23,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
  *
  * @author tech@intellij.io
  */
-@ApplicationScoped
+@Singleton
 @Slf4j
 public class DnsApiServiceImpl implements DnsApiService {
 
@@ -33,7 +33,6 @@ public class DnsApiServiceImpl implements DnsApiService {
 
     private Client getClient() {
         try {
-            log.info("get client|accessKeyId={}|accessKeySecret={}", aliyunProperties.getAccessKeyId(), aliyunProperties.getAccessKeySecret());
             com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                     .setAccessKeyId(aliyunProperties.getAccessKeyId())
                     .setAccessKeySecret(aliyunProperties.getAccessKeySecret());

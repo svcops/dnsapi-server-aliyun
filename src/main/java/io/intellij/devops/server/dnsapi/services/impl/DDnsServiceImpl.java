@@ -11,10 +11,9 @@ import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import io.quarkus.runtime.StartupEvent;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
@@ -31,7 +30,7 @@ import static io.intellij.devops.server.dnsapi.services.DnsApiService.SUCCESS_ST
  *
  * @author tech@intellij.io
  */
-@ApplicationScoped
+@Singleton
 @Slf4j
 public class DDnsServiceImpl implements DDnsService {
 
@@ -104,7 +103,9 @@ public class DDnsServiceImpl implements DDnsService {
     }
 
 
-    void onStart(@Observes StartupEvent ev) {
+    @PostConstruct
+    void init() {
+        log.info("validate ddns configuration");
         DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
         if (SUCCESS_STATUS_CODE != describeDomainsResponse.statusCode) {
             throw new RuntimeException("DescribeDomains occurred error|statusCode={}" + describeDomainsResponse.statusCode);
