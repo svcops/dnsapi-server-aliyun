@@ -11,7 +11,7 @@ import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import io.quarkus.runtime.ShutdownEvent;
+import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -104,7 +104,7 @@ public class DDnsServiceImpl implements DDnsService {
     }
 
 
-    void validate(@Observes ShutdownEvent ev) {
+    void validate(@Observes StartupEvent ev) {
         log.info("validate ddns configuration");
         DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
         if (SUCCESS_STATUS_CODE != describeDomainsResponse.statusCode) {

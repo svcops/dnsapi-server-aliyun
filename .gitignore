@@ -41,3 +41,5 @@ nb-configuration.xml
 .certs/
 
 logs/
+
+mirror.sh
