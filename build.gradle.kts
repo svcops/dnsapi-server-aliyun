@@ -41,7 +41,10 @@ dependencies {
     implementation("io.quarkus:quarkus-config-yaml")
     implementation("io.quarkus:quarkus-hibernate-validator")
 
-    implementation("io.quarkiverse.logging.logback:quarkus-logging-logback:1.1.2")
+    // problem like: https://github.com/spring-attic/spring-native/issues/429
+    // implementation("io.quarkiverse.logging.logback:quarkus-logging-logback:1.1.2")
+    // // https://mvnrepository.com/artifact/io.quarkiverse.logging.logback/quarkus-logging-logback-deployment
+    // implementation("io.quarkiverse.logging.logback:quarkus-logging-logback-deployment:1.1.2")
 
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
@@ -57,6 +60,9 @@ dependencies {
     implementation("com.aliyun:alidns20150109:3.4.4") {
         exclude(group = "org.dom4j", module = "dom4j")
     }
+    // https://mvnrepository.com/artifact/org.dom4j/dom4j
+    implementation("org.dom4j:dom4j:2.1.4")
+
 }
 
 
