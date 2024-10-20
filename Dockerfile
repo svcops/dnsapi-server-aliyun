@@ -1,9 +1,9 @@
-FROM openjdk:17-jdk
+FROM registry.cn-shanghai.aliyuncs.com/iproute/openjdk:21-bookworm
 
-MAINTAINER "devops@kubectl.net"
+MAINTAINER "tech@intellij.io"
 
-LABEL email="devops@kubectl.net" \
-      author="zhuzhenjie"
+LABEL email="tech@intellij.io" \
+      author="devops"
 
 WORKDIR /opt/app
 
