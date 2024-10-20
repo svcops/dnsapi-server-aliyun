@@ -17,4 +17,4 @@ log_info "build" "build native file"
 bash <(curl $ROOT_URI/gradle/build.sh) \
   -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
   -c "8.9-jdk21-graal-jammy-jammy_cache" \
-  -x "gradle clean build -x test -Dquarkus.native.enabled=true --info"
+  -x "gradle clean build -Dquarkus.native.enabled=true --info -x test"
