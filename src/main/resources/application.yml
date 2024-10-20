@@ -2,8 +2,9 @@ quarkus:
   http:
     port: 8080
 #  log:
-#    handler-stdout: false
-#    handler-file: false
+#    handler:
+#      stdout: false
+#      file: false
 
 service:
   accessTokenHeaderKey: ${ACCESS_TOKEN_KEY:access-token}

@@ -15,7 +15,6 @@ repositories {
     maven { url = uri("https://maven.aliyun.com/repository/public/") }
 }
 
-
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
@@ -31,15 +30,12 @@ val quarkusPlatformVersion: String by project
 
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
-    implementation("io.quarkus:quarkus-resteasy")
-    implementation("io.quarkus:quarkus-resteasy-jackson")
-
-    // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
-    compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
+    // implementation("io.quarkus:quarkus-resteasy")
+    // implementation("io.quarkus:quarkus-resteasy-jackson")
 
     // 更高性能的响应式
-    // implementation("io.quarkus:quarkus-rest")
-    // implementation("io.quarkus:quarkus-rest-jackson")
+    implementation("io.quarkus:quarkus-rest")
+    implementation("io.quarkus:quarkus-rest-jackson")
 
     implementation("io.quarkus:quarkus-arc")
     implementation("io.quarkus:quarkus-config-yaml")

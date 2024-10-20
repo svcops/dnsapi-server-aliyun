@@ -5,3 +5,11 @@ cd "$SHELL_FOLDER"
 
 source <(curl -SL https://gitlab.com/iprt/shell-basic/-/raw/main/build-project/basic.sh)
 source <(curl -sSL $ROOT_URI/func/log.sh)
+
+log_info "build" "build native file"
+
+bash <(curl $ROOT_URI/gradle/build.sh) \
+  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
+  -c "gradle:8.9-jdk21-graal-jammy-jammy_cache" \
+  -x "gradle clean build -x test -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true"
+

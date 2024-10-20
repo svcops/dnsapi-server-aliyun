@@ -1,7 +1,6 @@
 package io.intellij.devops.server.dnsapi.utils;
 
 import io.vertx.core.http.HttpServerRequest;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * RequestUtils
@@ -42,34 +41,6 @@ public class RequestUtils {
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.remoteAddress().host();
         }
-        // 对于通过代理的请求，第一个IP地址是客户端的真实IP地址
-        if (ip != null && ip.contains(",")) {
-            String[] ips = ip.split(",");
-            ip = ips[0].trim();
-        }
-
-        return ip;
-    }
-
-
-    public static String getRequestIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-
         // 对于通过代理的请求，第一个IP地址是客户端的真实IP地址
         if (ip != null && ip.contains(",")) {
             String[] ips = ip.split(",");
