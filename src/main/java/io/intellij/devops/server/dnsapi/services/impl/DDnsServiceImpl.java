@@ -12,6 +12,7 @@ import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ import static io.intellij.devops.server.dnsapi.services.DnsApiService.SUCCESS_ST
  *
  * @author tech@intellij.io
  */
-@Singleton
+@ApplicationScoped
 @Slf4j
 public class DDnsServiceImpl implements DDnsService {
 
@@ -103,7 +104,6 @@ public class DDnsServiceImpl implements DDnsService {
     }
 
 
-    @PostConstruct
     void init() {
         log.info("validate ddns configuration");
         DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
