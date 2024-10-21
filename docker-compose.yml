@@ -9,6 +9,7 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
+      - JAVA_OPTIONS=-Xmx64M
       - ACCESS_TOKEN_KEY=
       - ACCESS_TOKEN_LIST=
       - ENDPOINT=alidns.cn-shanghai.aliyuncs.com
