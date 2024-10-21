@@ -57,12 +57,11 @@ dependencies {
 
     implementation("org.apache.commons:commons-collections4:4.5.0-M2")
 
-    implementation("com.aliyun:alidns20150109:3.4.4") {
+    implementation("com.aliyun:alidns20150109:3.4.5") {
         exclude(group = "org.dom4j", module = "dom4j")
-        // exclude(group = "com.aliyun", module = "tea-xml")
     }
     // https://mvnrepository.com/artifact/org.dom4j/dom4j
-    implementation("org.dom4j:dom4j:2.1.4")
+    // implementation("org.dom4j:dom4j:2.1.4")
 
 }
 
