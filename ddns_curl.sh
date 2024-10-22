@@ -7,9 +7,9 @@ function log() {
   echo -e "$now - [ $remark ] $msg"
 }
 
-ddns_server_api=$1
-ddns_server_token_key=$2
-ddns_server_token_value=$3
+dnsapi_server_addr=$1
+dnsapi_server_token_key=$2
+dnsapi_server_token_value=$3
 
 domainName=$4
 rr=$5
@@ -20,9 +20,9 @@ function validate_param() {
     exit 1
   fi
 }
-validate_param $ddns_server_api
-validate_param $ddns_server_token_key
-validate_param $ddns_server_token_value
+validate_param $dnsapi_server_addr
+validate_param $dnsapi_server_token_key
+validate_param $dnsapi_server_token_value
 validate_param $domainName
 validate_param $rr
 
@@ -32,8 +32,8 @@ json_body="{\"domainName\":\"$domainName\",\"rr\":\"$rr\"}"
 request_result=$(curl --connect-timeout 10 -m 20 \
   -X POST \
   -H "Content-Type: application/json" \
-  -H "$ddns_server_token_key: $ddns_server_token_value" \
+  -H "$dnsapi_server_token_key: $dnsapi_server_token_value" \
   -d "$json_body" \
-  $ddns_server_api)
+  $dnsapi_server_addr)
 
 log "ddns" "$request_result"
