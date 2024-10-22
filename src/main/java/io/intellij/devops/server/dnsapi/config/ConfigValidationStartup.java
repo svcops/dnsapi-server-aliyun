@@ -54,7 +54,7 @@ public class ConfigValidationStartup {
             for (ConstraintViolation<T> violation : violations) {
                 sb.append(violation.getPropertyPath()).append(" - ").append(violation.getMessage()).append("\n");
             }
-            throw new RuntimeException("Configuration validation failed:\n" + sb.toString());
+            throw new RuntimeException("Configuration validation failed:\n" + sb);
         }
     }
 

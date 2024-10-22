@@ -1,16 +1,16 @@
 quarkus:
   http:
     port: 8080
-  log:
-    console:
-      level: INFO
-      format: "%d{HH:mm:ss,SSS} %-5p [%20.20t] [%c{3.}] %s%e%n"
-    file:
-      enable: true
-      path: ./logs/dnsapi.log
-      rotation:
-        max-file-size: 20M
-        file-suffix: .yyyy-MM-dd
+#  log:
+  #    console:
+  #      level: INFO
+  #      format: "%d{HH:mm:ss,SSS} %-5p [%20.20t] [%c{3.}] %s%e%n"
+  #    file:
+  #      enable: true
+  #      path: ./logs/dnsapi.log
+  #      rotation:
+  #        max-file-size: 20M
+  #        file-suffix: .yyyy-MM-dd
   native:
     additional-build-args: --report-unsupported-elements-at-runtime,--allow-incomplete-classpath
 

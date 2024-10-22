@@ -42,8 +42,8 @@ dependencies {
     implementation("io.quarkus:quarkus-hibernate-validator")
 
     // problem like: https://github.com/spring-attic/spring-native/issues/429
-    // implementation("io.quarkiverse.logging.logback:quarkus-logging-logback:1.1.2")
-    // // https://mvnrepository.com/artifact/io.quarkiverse.logging.logback/quarkus-logging-logback-deployment
+    implementation("io.quarkiverse.logging.logback:quarkus-logging-logback:1.1.2")
+    // https://mvnrepository.com/artifact/io.quarkiverse.logging.logback/quarkus-logging-logback-deployment
     // implementation("io.quarkiverse.logging.logback:quarkus-logging-logback-deployment:1.1.2")
 
     testImplementation("io.quarkus:quarkus-junit5")
