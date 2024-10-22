@@ -11,12 +11,11 @@ import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsRequest;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordRequest;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
-import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
+import io.intellij.devops.server.dnsapi.services.dns.ClientAdapter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 /**
  * DnsApiServiceImpl
@@ -28,29 +27,17 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
 public class DnsApiServiceImpl implements DnsApiService {
 
     @Inject
-    @ConfigProperties
-    AliyunProperties aliyunProperties;
+    ClientAdapter clientAdapter;
 
     private Client getClient() {
-        try {
-            com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
-                    .setAccessKeyId(aliyunProperties.getAccessKeyId())
-                    .setAccessKeySecret(aliyunProperties.getAccessKeySecret());
-
-            config.endpoint = aliyunProperties.getEndpoint();
-            return new Client(config);
-        } catch (Exception e) {
-            log.error("create client occurred error", e);
-            throw new RuntimeException("create client occurred error");
-        }
+        return clientAdapter.getClient();
     }
 
     @Override
     public DescribeDomainsResponse describeDomains() {
         try {
-            Client client = getClient();
-            log.info("describeDomains|client={}", client);
-            return client.describeDomains(new DescribeDomainsRequest());
+            log.info("describeDomains|client={}", getClient());
+            return getClient().describeDomains(new DescribeDomainsRequest());
         } catch (Exception e) {
             log.error("describeDomains|{}", e.getMessage());
             throw new RuntimeException(e);

@@ -12,12 +12,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * RequestTokenValidatorFilter
+ * RequestTokenValidationFilter
  *
  * @author tech@intellij.io
  */
 @Provider
-public class RequestTokenValidatorFilter implements ContainerRequestFilter {
+public class RequestTokenValidationFilter implements ContainerRequestFilter {
 
     @Inject
     AccessTokenPropertiesHolder holder;
@@ -33,6 +33,6 @@ public class RequestTokenValidatorFilter implements ContainerRequestFilter {
         if (!tokenSet.contains(accessToken)) {
             throw new RuntimeException("invalid token");
         }
-
     }
+
 }

@@ -16,13 +16,13 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
 import java.util.Set;
 
 /**
- * ConfigValidationStartup
+ * PropertiesValidationStartup
  *
  * @author tech@intellij.io
  */
 @ApplicationScoped
 @Slf4j
-public class ConfigValidationStartup {
+public class PropertiesValidationStartup {
 
     @Inject
     @ConfigProperties
@@ -40,14 +40,14 @@ public class ConfigValidationStartup {
     Validator validator;
 
     void onStart(@Observes StartupEvent ev) {
-        validateConfig(accessTokenProperties);
-        validateConfig(aliyunProperties);
-        validateConfig(dnsApiProperties);
+        validateProperties(accessTokenProperties);
+        validateProperties(aliyunProperties);
+        validateProperties(dnsApiProperties);
     }
 
-    private <T> void validateConfig(T config) {
-        log.info("validate config|{}", config);
-        Set<ConstraintViolation<T>> violations = validator.validate(config);
+    private <T> void validateProperties(T properties) {
+        log.info("validate properties|{}", properties);
+        Set<ConstraintViolation<T>> violations = validator.validate(properties);
 
         if (!violations.isEmpty()) {
             StringBuilder sb = new StringBuilder();

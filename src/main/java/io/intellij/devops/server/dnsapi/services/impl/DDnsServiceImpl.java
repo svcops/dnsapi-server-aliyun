@@ -103,7 +103,6 @@ public class DDnsServiceImpl implements DDnsService {
         log.warn("删除DDNS子域名的所有解析记录|domainName={} rr={}", domainName, rr);
     }
 
-
     void validate(@Observes StartupEvent ev) {
         log.info("validate ddns configuration");
         DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
