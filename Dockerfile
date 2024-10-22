@@ -1,19 +1,18 @@
-FROM registry.access.redhat.com/ubi8/openjdk-21:1.20
+FROM registry.cn-shanghai.aliyuncs.com/iproute/openjdk:21-bookworm
+
 MAINTAINER "tech@intellij.io"
 
 LABEL email="tech@intellij.io" \
       author="devops"
 
-ENV LANGUAGE='en_US:en'
+WORKDIR /opt/app
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
-COPY build/quarkus-app/lib/ /deployments/lib/
-COPY build/quarkus-app/*.jar /deployments/
-COPY build/quarkus-app/app/ /deployments/app/
-COPY build/quarkus-app/quarkus/ /deployments/quarkus/
+COPY build/quarkus-app/lib/ /opt/app/lib/
+COPY build/quarkus-app/*.jar /opt/app/
+COPY build/quarkus-app/app/ /opt/app/app/
+COPY build/quarkus-app/quarkus/ /opt/app/quarkus/
 
 EXPOSE 8080
-ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
-ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
-ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]
+CMD java $JAVA_OPTIONS -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -jar quarkus-run.jar
