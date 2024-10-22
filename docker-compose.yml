@@ -5,7 +5,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - "./logs:/deployments/logs"
+      - "./logs:/opt/app/logs"
     restart: always
     environment:
       - TZ=Asia/Shanghai
