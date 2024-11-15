@@ -10,6 +10,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - JAVA_OPTIONS=-Xmx64M
+      - SPRING_PROFILES_ACTIVE=prod
       - SERVER_PORT=8080
       - ACCESS_TOKEN_KEY=
       - ACCESS_TOKEN_LIST=

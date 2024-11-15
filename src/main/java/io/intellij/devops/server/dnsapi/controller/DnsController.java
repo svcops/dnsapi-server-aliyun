@@ -36,6 +36,7 @@ public class DnsController {
 
     @PostMapping("/addRecord")
     public Result<AddDomainRecordResponseBody> addRecord(@RequestBody DnsRequest dnsRequest) {
+        log.info("addRecord|domainName={}|rr={}|type={}|value={}", dnsRequest.getDomainName(), dnsRequest.getRr(), dnsRequest.getType(), dnsRequest.getValue());
         AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(dnsRequest.getDomainName(),
                 new AddDomainRecordRequest()
                         .setDomainName(dnsRequest.getDomainName())
@@ -52,6 +53,7 @@ public class DnsController {
 
     @PostMapping("/getRecords")
     public Result<DescribeSubDomainRecordsResponseBody> getRecords(@RequestBody DnsRequest dnsRequest) {
+        log.info("getRecords|domainName={}|rr={}", dnsRequest.getDomainName(), dnsRequest.getRr());
         DescribeSubDomainRecordsResponse describeSubDomainRecordsResponse = dnsApiService.describeSubDomainRecords(dnsRequest.getDomainName(),
                 new DescribeSubDomainRecordsRequest()
                         .setSubDomain(dnsRequest.getRr() + "." + dnsRequest.getDomainName()));
@@ -66,6 +68,7 @@ public class DnsController {
 
     @PostMapping("/deleteRecords")
     public Result<DeleteSubDomainRecordsResponseBody> deleteRecords(@RequestBody DnsRequest dnsRequest) {
+        log.info("deleteRecords|domainName={}|rr={}", dnsRequest.getDomainName(), dnsRequest.getRr());
         DeleteSubDomainRecordsResponse response = dnsApiService.deleteSubDomainRecords(dnsRequest.getDomainName(),
                 new DeleteSubDomainRecordsRequest()
                         .setDomainName(dnsRequest.getDomainName())
@@ -82,6 +85,7 @@ public class DnsController {
 
     @PostMapping("/deleteThenAddRecord")
     public Result<Map<String, Object>> deleteThenAddRecord(@RequestBody DnsRequest dnsRequest) {
+        log.info("deleteThenAddRecord|domainName={}|rr={}|type={}|value={}", dnsRequest.getDomainName(), dnsRequest.getRr(), dnsRequest.getType(), dnsRequest.getValue());
 
         DeleteSubDomainRecordsResponse deleteSubDomainRecordsResponse = dnsApiService.deleteSubDomainRecords(dnsRequest.getDomainName(),
                 new DeleteSubDomainRecordsRequest()
