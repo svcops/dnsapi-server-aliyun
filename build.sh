@@ -29,7 +29,7 @@ registry="registry.cn-shanghai.aliyuncs.com"
 version="latest"
 #version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
 
-bash <(curl sSL $ROOT_URI/docker/build.sh) \
+bash <(curl -sSL $ROOT_URI/docker/build.sh) \
   -i "$registry/iproute/dnsapi-server-aliyun" \
   -v "$version" \
   -r "false" \
