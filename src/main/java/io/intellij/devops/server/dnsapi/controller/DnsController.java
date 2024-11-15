@@ -53,9 +53,9 @@ public class DnsController {
 
     @PostMapping("/getDomainRecords")
     public PageResult<List<SimplifyDomainRecord>> getDomainRecords(@RequestBody DnsRequest dnsRequest) {
-        log.info("getDomainRecords|domainName={}", dnsRequest.getDomainName());
         long pageNumber = Objects.isNull(dnsRequest.getPageNumber()) ? 1 : dnsRequest.getPageNumber();
         long pageSize = Objects.isNull(dnsRequest.getPageSize()) ? 10 : dnsRequest.getPageSize();
+        log.info("getDomainRecords|domainName={}|pageNumber={}|pageSize={}", dnsRequest.getDomainName(), pageNumber, pageSize);
         DescribeDomainRecordsResponse describeDomainRecordsResponse = dnsApiService.describeDomainRecords(dnsRequest.getDomainName(),
                 new DescribeDomainRecordsRequest()
                         .setDomainName(dnsRequest.getDomainName())
