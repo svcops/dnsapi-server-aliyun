@@ -5,4 +5,6 @@ logs/
 
 *.iml
 
+mirror.sh
+
 *.http
