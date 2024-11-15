@@ -64,7 +64,7 @@ public class DnsApiServiceImpl implements DnsApiService, InitializingBean {
 
     @Override
     public List<String> domainAccessControlList() {
-        return this.dnsApiProperties.getDomainAcl();
+        return this.dnsApiProperties.getDomainAcl().stream().sorted().toList();
     }
 
     @Override
