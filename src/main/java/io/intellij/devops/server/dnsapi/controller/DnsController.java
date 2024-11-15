@@ -43,6 +43,7 @@ public class DnsController {
     @PostMapping("/addRecord")
     public Result<AddDomainRecordResponseBody> addRecord(@RequestBody DnsRequest dnsRequest) {
         log.info("addRecord|domainName={}|rr={}|type={}|value={}", dnsRequest.getDomainName(), dnsRequest.getRr(), dnsRequest.getType(), dnsRequest.getValue());
+        aclCheck(dnsRequest.getDomainName());
         AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(dnsRequest.getDomainName(),
                 new AddDomainRecordRequest()
                         .setDomainName(dnsRequest.getDomainName())
@@ -60,6 +61,7 @@ public class DnsController {
     @PostMapping("/getRecords")
     public Result<DescribeSubDomainRecordsResponseBody> getRecords(@RequestBody DnsRequest dnsRequest) {
         log.info("getRecords|domainName={}|rr={}", dnsRequest.getDomainName(), dnsRequest.getRr());
+        aclCheck(dnsRequest.getDomainName());
         DescribeSubDomainRecordsResponse describeSubDomainRecordsResponse = dnsApiService.describeSubDomainRecords(dnsRequest.getDomainName(),
                 new DescribeSubDomainRecordsRequest()
                         .setSubDomain(dnsRequest.getRr() + "." + dnsRequest.getDomainName()));
@@ -75,6 +77,7 @@ public class DnsController {
     @PostMapping("/deleteRecords")
     public Result<DeleteSubDomainRecordsResponseBody> deleteRecords(@RequestBody DnsRequest dnsRequest) {
         log.info("deleteRecords|domainName={}|rr={}", dnsRequest.getDomainName(), dnsRequest.getRr());
+        aclCheck(dnsRequest.getDomainName());
         DeleteSubDomainRecordsResponse response = dnsApiService.deleteSubDomainRecords(dnsRequest.getDomainName(),
                 new DeleteSubDomainRecordsRequest()
                         .setDomainName(dnsRequest.getDomainName())
@@ -92,7 +95,7 @@ public class DnsController {
     @PostMapping("/deleteThenAddRecord")
     public Result<Map<String, Object>> deleteThenAddRecord(@RequestBody DnsRequest dnsRequest) {
         log.info("deleteThenAddRecord|domainName={}|rr={}|type={}|value={}", dnsRequest.getDomainName(), dnsRequest.getRr(), dnsRequest.getType(), dnsRequest.getValue());
-
+        aclCheck(dnsRequest.getDomainName());
         DeleteSubDomainRecordsResponse deleteSubDomainRecordsResponse = dnsApiService.deleteSubDomainRecords(dnsRequest.getDomainName(),
                 new DeleteSubDomainRecordsRequest()
                         .setDomainName(dnsRequest.getDomainName())
@@ -116,10 +119,17 @@ public class DnsController {
         }
 
         return Result.ok(
-                Map.of("delete", deleteSubDomainRecordsResponse.body,
-                        "add", addDomainRecordResponse.body
+                Map.of("deleteRecords", deleteSubDomainRecordsResponse.body,
+                        "addRecord", addDomainRecordResponse.body
                 )
         );
+    }
+
+    private void aclCheck(String domainName) {
+        List<String> domainAclList = dnsApiService.domainAccessControlList();
+        if (!domainAclList.contains(domainName)) {
+            throw new RuntimeException("domain access control list does not contains domainName|domainName=" + domainName);
+        }
     }
 
 }
