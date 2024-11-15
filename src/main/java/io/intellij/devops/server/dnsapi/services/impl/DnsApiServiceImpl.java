@@ -5,6 +5,8 @@ import com.aliyun.alidns20150109.models.AddDomainRecordRequest;
 import com.aliyun.alidns20150109.models.AddDomainRecordResponse;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsRequest;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsResponse;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsRequest;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DescribeDomainsRequest;
 import com.aliyun.alidns20150109.models.DescribeDomainsResponse;
 import com.aliyun.alidns20150109.models.DescribeDomainsResponseBody;
@@ -76,6 +78,17 @@ public class DnsApiServiceImpl implements DnsApiService, InitializingBean {
             return responses;
         } catch (Exception e) {
             log.error("describeDomains|{}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public DescribeDomainRecordsResponse describeDomainRecords(String apiDomain,
+                                                               DescribeDomainRecordsRequest describeDomainRecordsRequest) {
+        try {
+            return getClient(apiDomain).describeDomainRecords(describeDomainRecordsRequest);
+        } catch (Exception e) {
+            log.error("describeDomainRecords|{}", e.getMessage());
             throw new RuntimeException(e);
         }
     }

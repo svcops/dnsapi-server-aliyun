@@ -4,6 +4,8 @@ import com.aliyun.alidns20150109.models.AddDomainRecordRequest;
 import com.aliyun.alidns20150109.models.AddDomainRecordResponse;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsRequest;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsResponse;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsRequest;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DescribeDomainsResponse;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsRequest;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
@@ -26,6 +28,9 @@ public interface DnsApiService {
     List<String> domainAccessControlList();
 
     List<DescribeDomainsResponse> describeDomains();
+
+    DescribeDomainRecordsResponse describeDomainRecords(String apiDomain,
+                                                        DescribeDomainRecordsRequest describeDomainRecordsRequest);
 
     DescribeSubDomainRecordsResponse describeSubDomainRecords(String apiDomain,
                                                               DescribeSubDomainRecordsRequest describeSubDomainRecordsRequest);

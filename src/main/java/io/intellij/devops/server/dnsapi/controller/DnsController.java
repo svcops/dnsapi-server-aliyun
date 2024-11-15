@@ -6,13 +6,23 @@ import com.aliyun.alidns20150109.models.AddDomainRecordResponseBody;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsRequest;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsResponseBody;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsRequest;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsResponse;
+import com.aliyun.alidns20150109.models.DescribeDomainRecordsResponseBody;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsRequest;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponseBody;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.intellij.devops.server.dnsapi.entities.PageResult;
 import io.intellij.devops.server.dnsapi.entities.Result;
 import io.intellij.devops.server.dnsapi.entities.dns.DnsRequest;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * DnsController
@@ -39,6 +50,58 @@ public class DnsController {
     public Result<List<String>> domainAccessControlList() {
         return Result.ok(dnsApiService.domainAccessControlList());
     }
+
+    @PostMapping("/getDomainRecords")
+    public PageResult<List<SimplifyDomainRecord>> getDomainRecords(@RequestBody DnsRequest dnsRequest) {
+        log.info("getDomainRecords|domainName={}", dnsRequest.getDomainName());
+        long pageNumber = Objects.isNull(dnsRequest.getPageNumber()) ? 1 : dnsRequest.getPageNumber();
+        long pageSize = Objects.isNull(dnsRequest.getPageSize()) ? 10 : dnsRequest.getPageSize();
+        DescribeDomainRecordsResponse describeDomainRecordsResponse = dnsApiService.describeDomainRecords(dnsRequest.getDomainName(),
+                new DescribeDomainRecordsRequest()
+                        .setDomainName(dnsRequest.getDomainName())
+                        .setPageNumber(pageNumber)
+                        .setPageSize(pageSize)
+        );
+
+        if (describeDomainRecordsResponse.statusCode != DnsApiService.SUCCESS_STATUS_CODE) {
+            throw new RuntimeException("DescribeDomainRecords occurred error|statusCode={}" + describeDomainRecordsResponse.statusCode);
+        }
+
+        DescribeDomainRecordsResponseBody body = describeDomainRecordsResponse.getBody();
+
+        Long rtPageNumber = body.getPageNumber();
+        Long rtPageSize = body.getPageSize();
+        Long rtTotalCount = body.getTotalCount();
+
+        return PageResult.okPage(
+                body.getDomainRecords().getRecord().stream().map(record -> SimplifyDomainRecord.builder()
+                        .type(record.getType())
+                        .rr(record.getRR())
+                        .domainName(record.getDomainName())
+                        .value(record.getValue())
+                        .ttl(record.getTTL())
+                        .status(record.getStatus())
+                        .build()
+                ).toList(), rtPageNumber, rtPageSize, rtTotalCount
+        );
+    }
+
+    @JsonPropertyOrder({"type", "rr", "domainName", "value", "ttl"})
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    @Builder
+    @Data
+    public static class SimplifyDomainRecord {
+        private String type;
+        private String rr;
+        private String domainName;
+        private String value;
+        private Long ttl;
+        private String status;
+    }
+
+    // 下面的都是subDomainRecords的操作
 
     @PostMapping("/addRecord")
     public Result<AddDomainRecordResponseBody> addRecord(@RequestBody DnsRequest dnsRequest) {
