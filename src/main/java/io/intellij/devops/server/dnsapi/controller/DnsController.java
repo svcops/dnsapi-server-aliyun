@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,13 +56,21 @@ public class DnsController {
     public PageResult<List<SimplifyDomainRecord>> getDomainRecords(@RequestBody DnsRequest dnsRequest) {
         long pageNumber = Objects.isNull(dnsRequest.getPageNumber()) ? 1 : dnsRequest.getPageNumber();
         long pageSize = Objects.isNull(dnsRequest.getPageSize()) ? 10 : dnsRequest.getPageSize();
-        log.info("getDomainRecords|domainName={}|pageNumber={}|pageSize={}", dnsRequest.getDomainName(), pageNumber, pageSize);
-        DescribeDomainRecordsResponse describeDomainRecordsResponse = dnsApiService.describeDomainRecords(dnsRequest.getDomainName(),
-                new DescribeDomainRecordsRequest()
-                        .setDomainName(dnsRequest.getDomainName())
-                        .setPageNumber(pageNumber)
-                        .setPageSize(pageSize)
-        );
+        log.info("getDomainRecords|domainName={}|pageNumber={}|pageSize={}|rrKeyWord={}|valueKeyWord={}", dnsRequest.getDomainName(), pageNumber, pageSize, dnsRequest.getRrKeyWord(), dnsRequest.getValueKeyWord());
+        DescribeDomainRecordsRequest describeDomainRecordsRequest = new DescribeDomainRecordsRequest()
+                .setDomainName(dnsRequest.getDomainName())
+                .setPageNumber(pageNumber)
+                .setPageSize(pageSize);
+
+        if (StringUtils.hasLength(dnsRequest.getRrKeyWord())) {
+            describeDomainRecordsRequest.setRRKeyWord(dnsRequest.getRrKeyWord());
+        }
+
+        if (StringUtils.hasLength(dnsRequest.getValueKeyWord())) {
+            describeDomainRecordsRequest.setValueKeyWord(dnsRequest.getValueKeyWord());
+        }
+
+        DescribeDomainRecordsResponse describeDomainRecordsResponse = dnsApiService.describeDomainRecords(dnsRequest.getDomainName(), describeDomainRecordsRequest);
 
         if (describeDomainRecordsResponse.statusCode != DnsApiService.SUCCESS_STATUS_CODE) {
             throw new RuntimeException("DescribeDomainRecords occurred error|statusCode={}" + describeDomainRecordsResponse.statusCode);

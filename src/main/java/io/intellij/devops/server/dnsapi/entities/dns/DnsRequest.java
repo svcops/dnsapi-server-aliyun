@@ -24,4 +24,8 @@ public class DnsRequest extends PageRequest {
     private String rr;
     private String type;
     private String value;
+
+    // 域名记录关键词搜索
+    private String valueKeyWord;
+    private String rrKeyWord;
 }
