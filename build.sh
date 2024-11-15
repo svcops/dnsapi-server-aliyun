@@ -6,31 +6,30 @@ cd "$SHELL_FOLDER"
 source <(curl -SL https://gitlab.com/iprt/shell-basic/-/raw/main/build-project/basic.sh)
 source <(curl -sSL $ROOT_URI/func/log.sh)
 
-log_info "build" "build quarkus run file"
+log_info "step 1" "gradle build jar"
 
 bash <(curl $ROOT_URI/gradle/build.sh) \
-  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.9-jdk21-graal-jammy" \
-  -c "8.9-jdk21-graal-jammy_cache" \
-  -x "gradle clean build -x test --info"
+  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.10.2-jdk21-jammy" \
+  -c "gradle_8.10.2-jdk21-jammy_cache" \
+  -x "gradle clean build -x test"
 
-#  -x "gradle clean build -Dquarkus.package.jar.enabled=false -Dquarkus.native.enabled=true --info -x test"
-# 阿里云SDK有问题，构建不了native文件
-# https://quarkus.io/guides/config#package-and-run-the-application
+jar_name="dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar"
 
-run_file="quarkus-run.jar"
-
-if [ ! -f build/quarkus-app/$run_file ]; then
-  log_error "build app" "build quarkus-app file ($run_file) failed"
+if [ ! -f "build/libs/$jar_name" ]; then
+  log "validate" "$jar_name 不存在，打包失败，退出"
   exit 1
 fi
 
 log "step 2" "docker build and push"
 
 registry="registry.cn-shanghai.aliyuncs.com"
+
+#timestamp_tag=$(date +"%Y-%m-%d_%H-%M-%S")
+
 version="latest"
+#version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
 
 bash <(curl $ROOT_URI/docker/build.sh) \
-  -f "Dockerfile" \
   -i "$registry/iproute/dnsapi-server-aliyun" \
   -v "$version" \
   -r "false" \

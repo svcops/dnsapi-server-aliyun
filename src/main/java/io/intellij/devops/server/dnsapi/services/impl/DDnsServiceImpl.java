@@ -2,8 +2,6 @@ package io.intellij.devops.server.dnsapi.services.impl;
 
 import com.aliyun.alidns20150109.models.AddDomainRecordResponse;
 import com.aliyun.alidns20150109.models.DeleteSubDomainRecordsResponse;
-import com.aliyun.alidns20150109.models.DescribeDomainsResponse;
-import com.aliyun.alidns20150109.models.DescribeDomainsResponseBody;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponseBody;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
@@ -11,18 +9,16 @@ import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.entities.ddns.DDnsResponse;
 import io.intellij.devops.server.dnsapi.services.DDnsService;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
-import io.quarkus.runtime.StartupEvent;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
-import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.intellij.devops.server.dnsapi.services.DnsApiService.SUCCESS_STATUS_CODE;
 
@@ -31,20 +27,18 @@ import static io.intellij.devops.server.dnsapi.services.DnsApiService.SUCCESS_ST
  *
  * @author tech@intellij.io
  */
-@ApplicationScoped
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Service
 @Slf4j
-public class DDnsServiceImpl implements DDnsService {
+public class DDnsServiceImpl implements DDnsService, InitializingBean {
+    private final DnsApiService dnsApiService;
 
-    @Inject
-    DnsApiService dnsApiService;
-
-    @Inject
-    @ConfigProperties
-    DnsApiProperties dnsApiProperties;
+    private final DnsApiProperties dnsApiProperties;
 
     @Override
     public DDnsResponse ddns(String domainName, String rr, String ipv4) {
-        DescribeSubDomainRecordsResponse describeSubDomainRecordsResponse = dnsApiService.describeSubDomainRecords(rr + "." + domainName);
+        DescribeSubDomainRecordsResponse describeSubDomainRecordsResponse = dnsApiService.describeSubDomainRecords(domainName,
+                rr + "." + domainName);
         if (describeSubDomainRecordsResponse.statusCode != SUCCESS_STATUS_CODE) {
             throw new RuntimeException("DescribeSubDomainRecords occurred error|statusCode={}" + describeSubDomainRecordsResponse.statusCode);
         }
@@ -56,7 +50,7 @@ public class DDnsServiceImpl implements DDnsService {
             return add(domainName, rr, ipv4);
         } else if (totalCount == 1) {
             DescribeSubDomainRecordsResponseBody.DescribeSubDomainRecordsResponseBodyDomainRecords domainRecords = describeSubDomainRecordsResponseBody.getDomainRecords();
-            DescribeSubDomainRecordsResponseBody.DescribeSubDomainRecordsResponseBodyDomainRecordsRecord record = domainRecords.record.get(0);
+            DescribeSubDomainRecordsResponseBody.DescribeSubDomainRecordsResponseBodyDomainRecordsRecord record = domainRecords.record.getFirst();
             if (!"A".equals(record.getType())) {
                 log.error("唯一的一条记录不是A记录，作为DDNS的子域名，保持一条记录方便操作，因此直接删除所有记录并重新添加");
                 delete(domainName, rr);
@@ -77,9 +71,9 @@ public class DDnsServiceImpl implements DDnsService {
         }
     }
 
-
     private DDnsResponse add(String domainName, String rr, String ipv4) {
-        AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(domainName, rr, IPV4_TYPE, ipv4);
+        AddDomainRecordResponse addDomainRecordResponse = dnsApiService.addDomainRecord(domainName
+                , domainName, rr, IPV4_TYPE, ipv4);
         if (addDomainRecordResponse.statusCode == SUCCESS_STATUS_CODE) {
             return DDnsResponse.of(addDomainRecordResponse.getBody(), rr + "." + domainName, ipv4);
         } else {
@@ -88,7 +82,8 @@ public class DDnsServiceImpl implements DDnsService {
     }
 
     private DDnsResponse update(String rr, String recordId, String ipv4, String domainName) {
-        UpdateDomainRecordResponse updateDomainRecordResponse = dnsApiService.updateDomainRecord(rr, recordId, IPV4_TYPE, ipv4);
+        UpdateDomainRecordResponse updateDomainRecordResponse = dnsApiService.updateDomainRecord(domainName,
+                rr, recordId, IPV4_TYPE, ipv4);
         if (SUCCESS_STATUS_CODE != updateDomainRecordResponse.statusCode) {
             throw new RuntimeException("UpdateDomainRecord occurred error|statusCode={}" + updateDomainRecordResponse.statusCode);
         }
@@ -96,24 +91,18 @@ public class DDnsServiceImpl implements DDnsService {
     }
 
     private void delete(String domainName, String rr) {
-        DeleteSubDomainRecordsResponse deleteSubDomainRecordsResponse = dnsApiService.deleteSubDomainRecords(domainName, rr);
+        DeleteSubDomainRecordsResponse deleteSubDomainRecordsResponse = dnsApiService.deleteSubDomainRecords(domainName
+                , domainName, rr);
         if (SUCCESS_STATUS_CODE != deleteSubDomainRecordsResponse.statusCode) {
             throw new RuntimeException("DeleteSubDomainRecords occurred error|statusCode={}" + deleteSubDomainRecordsResponse.statusCode);
         }
         log.warn("删除DDNS子域名的所有解析记录|domainName={} rr={}", domainName, rr);
     }
 
-    void validate(@Observes StartupEvent ev) {
-        log.info("validate ddns configuration");
-        DescribeDomainsResponse describeDomainsResponse = dnsApiService.describeDomains();
-        if (SUCCESS_STATUS_CODE != describeDomainsResponse.statusCode) {
-            throw new RuntimeException("DescribeDomains occurred error|statusCode={}" + describeDomainsResponse.statusCode);
-        }
-
-        List<DescribeDomainsResponseBody.DescribeDomainsResponseBodyDomainsDomain> domainList = describeDomainsResponse.getBody().getDomains().getDomain();
-        if (CollectionUtils.isEmpty(domainList)) {
-            throw new RuntimeException("当前阿里云DNS解析中没有域名");
-        }
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // 账户中所有的域名
+        List<String> domainList = dnsApiService.domains();
 
         // 验证 domain-acl 的域名列表
         List<String> domainAcl = dnsApiProperties.getDomainAcl();
@@ -121,13 +110,10 @@ public class DDnsServiceImpl implements DDnsService {
             throw new RuntimeException("domain acl is empty");
         }
 
-        Set<String> accountDomains = domainList.stream().map(DescribeDomainsResponseBody.DescribeDomainsResponseBodyDomainsDomain::getDomainName).collect(Collectors.toSet());
         Set<String> aclDomains = new HashSet<>(domainAcl);
 
-        if (!accountDomains.containsAll(aclDomains)) {
-            throw new RuntimeException("域名控制列表的域名包含阿里云账号中不存在的域名|domainAcl=" + domainList);
-        } else {
-            log.info("domain access list|{}", aclDomains);
+        if (!new HashSet<>(domainList).containsAll(aclDomains)) {
+            throw new RuntimeException("域名控制列表的域名包含阿里云账号中不存在的域名");
         }
     }
 

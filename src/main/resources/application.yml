@@ -1,38 +1,27 @@
-quarkus:
-  http:
-    port: 8080
-#  log:
-  #    console:
-  #      level: INFO
-  #      format: "%d{HH:mm:ss,SSS} %-5p [%20.20t] [%c{3.}] %s%e%n"
-  #    file:
-  #      enable: true
-  #      path: ./logs/dnsapi.log
-  #      rotation:
-  #        max-file-size: 20M
-  #        file-suffix: .yyyy-MM-dd
-  native:
-    additional-build-args: --report-unsupported-elements-at-runtime,--allow-incomplete-classpath
+server:
+  port: ${SERVER_PORT:8080}
 
-io:
-  quarkus:
-    logging:
-      color:
-        warning: "yellow"
-        error: "red"
-        info: "blue"
-        debug: "green"
-        trace: "magenta"
+spring:
+  application:
+    name: dnsapi
+  profiles:
+    active: dev
+  main:
+    banner-mode: off
+  mvc:
+    static-path-pattern: /statics/**
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
+    time-zone: GMT+8
 
 service:
-  accessTokenHeaderKey: ${ACCESS_TOKEN_KEY:access-token}
-  accessTokenList: ${ACCESS_TOKEN_LIST:hello,ddns}
+  access-token-header-key: ${ACCESS_TOKEN_KEY:access-token}
+  access-token-list: ${ACCESS_TOKEN_LIST:hello,ddns}
 
 aliyun:
   endpoint: ${ENDPOINT:alidns.cn-shanghai.aliyuncs.com}
-  accessKeyId: ${ALIBABA_CLOUD_ACCESS_KEY_ID:}
-  accessKeySecret: ${ALIBABA_CLOUD_ACCESS_KEY_SECRET:}
+  accessKeyList: ${ALIBABA_CLOUD_ACCESS_KEY_LIST:[]}
 
 dns-api:
-  domainAcl: ${DNS_API_DOMAIN_ACCESS_CONTROL_LIST:}
-  excludeRrList: ${DNS_API_EXCLUDE_RR_LIST:}
+  domain-acl: ${DNS_API_DOMAIN_ACCESS_CONTROL_LIST:}
+  exclude-rr-list: ${DNS_API_EXCLUDE_RR_LIST:}

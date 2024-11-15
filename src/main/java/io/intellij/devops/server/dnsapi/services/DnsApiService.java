@@ -10,6 +10,8 @@ import com.aliyun.alidns20150109.models.DescribeSubDomainRecordsResponse;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordRequest;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
 
+import java.util.List;
+
 /**
  * DnsApiService
  *
@@ -19,22 +21,32 @@ public interface DnsApiService {
 
     int SUCCESS_STATUS_CODE = 200;
 
-    DescribeDomainsResponse describeDomains();
+    List<String> domains();
 
-    DescribeSubDomainRecordsResponse describeSubDomainRecords(DescribeSubDomainRecordsRequest describeSubDomainRecordsRequest);
+    List<DescribeDomainsResponse> describeDomains();
 
-    AddDomainRecordResponse addDomainRecord(AddDomainRecordRequest addDomainRecordRequest);
+    DescribeSubDomainRecordsResponse describeSubDomainRecords(String apiDomain,
+                                                              DescribeSubDomainRecordsRequest describeSubDomainRecordsRequest);
 
-    UpdateDomainRecordResponse updateDomainRecord(UpdateDomainRecordRequest updateDomainRecordRequest);
+    AddDomainRecordResponse addDomainRecord(String apiDomain,
+                                            AddDomainRecordRequest addDomainRecordRequest);
 
-    DeleteSubDomainRecordsResponse deleteSubDomainRecords(DeleteSubDomainRecordsRequest deleteSubDomainRecordsRequest);
+    UpdateDomainRecordResponse updateDomainRecord(String apiDomain,
+                                                  UpdateDomainRecordRequest updateDomainRecordRequest);
 
-    DescribeSubDomainRecordsResponse describeSubDomainRecords(String subDomain);
+    DeleteSubDomainRecordsResponse deleteSubDomainRecords(String apiDomain,
+                                                          DeleteSubDomainRecordsRequest deleteSubDomainRecordsRequest);
 
-    AddDomainRecordResponse addDomainRecord(String domainName, String rr, String type, String ipv4);
+    DescribeSubDomainRecordsResponse describeSubDomainRecords(String apiDomain,
+                                                              String subDomain);
 
-    UpdateDomainRecordResponse updateDomainRecord(String rr, String recordId, String type, String ipv4);
+    AddDomainRecordResponse addDomainRecord(String apiDomain,
+                                            String domainName, String rr, String type, String ipv4);
 
-    DeleteSubDomainRecordsResponse deleteSubDomainRecords(String domainName, String rr);
+    UpdateDomainRecordResponse updateDomainRecord(String apiDomain,
+                                                  String rr, String recordId, String type, String ipv4);
+
+    DeleteSubDomainRecordsResponse deleteSubDomainRecords(String apiDomain,
+                                                          String domainName, String rr);
 
 }

@@ -1,14 +1,16 @@
 package io.intellij.devops.server.dnsapi.utils;
 
-import io.vertx.core.http.HttpServerRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.regex.Pattern;
 
 /**
- * RequestUtils
+ * HttpServletRequestUtils
  *
  * @author tech@intellij.io
  */
-public class RequestUtils {
-    private RequestUtils() {
+public class HttpServletRequestUtils {
+    private HttpServletRequestUtils() {
     }
 
     // 定义 IPv4 的正则表达式
@@ -16,6 +18,7 @@ public class RequestUtils {
             "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}" +
             "([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
 
+    static Pattern IPv4_PATTERN = Pattern.compile(IPv4_REGEX);
 
     public static boolean isValidIPv4(String ipAddress) {
         if (ipAddress == null) {
@@ -24,7 +27,7 @@ public class RequestUtils {
         return ipAddress.matches(IPv4_REGEX);
     }
 
-    public static String getRequestIp(HttpServerRequest request) {
+    public static String getRequestIp(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
@@ -39,8 +42,9 @@ public class RequestUtils {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.remoteAddress().host();
+            ip = request.getRemoteAddr();
         }
+
         // 对于通过代理的请求，第一个IP地址是客户端的真实IP地址
         if (ip != null && ip.contains(",")) {
             String[] ips = ip.split(",");
@@ -49,5 +53,4 @@ public class RequestUtils {
 
         return ip;
     }
-
 }

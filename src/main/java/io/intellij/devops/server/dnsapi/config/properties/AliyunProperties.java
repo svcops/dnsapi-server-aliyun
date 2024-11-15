@@ -1,10 +1,16 @@
 package io.intellij.devops.server.dnsapi.config.properties;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.ToString;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * AliyunProperties
@@ -13,14 +19,25 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
  */
 @ToString
 @Data
-@ConfigProperties(prefix = "aliyun")
+@ConfigurationProperties(prefix = "aliyun")
+@Validated
 public class AliyunProperties {
     @NotBlank(message = "endpoint must not be blank")
     private String endpoint;
 
-    @NotEmpty(message = "accessKeyId must not be blank")
-    private String accessKeyId;
+    @NotEmpty(message = "accessKeyList must not empty collection")
+    private List<AccessKey> accessKeyList;
 
-    @NotEmpty(message = "accessKeySecret must not be blank")
-    private String accessKeySecret;
+    public void setAccessKeyList(String accessKeyListJson) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        this.accessKeyList = objectMapper.readValue(accessKeyListJson, new TypeReference<List<AccessKey>>() {
+        });
+    }
+
+    @ToString
+    @Data
+    public static class AccessKey {
+        private String id;
+        private String secret;
+    }
 }

@@ -9,11 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.intellij.devops.server.dnsapi.config.properties.AccessTokenProperties;
 import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
 import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * AliyunDnsApiTest
@@ -22,23 +21,20 @@ import org.junit.jupiter.api.Test;
  *
  * @author tech@intellij.io
  */
-@QuarkusTest
+@SpringBootTest
 @Slf4j
 public class AliyunDnsApiTest {
+    @Autowired
+    private AliyunProperties aliyunProperties;
 
-    @Inject
-    @ConfigProperties
-    AliyunProperties aliyunProperties;
-    @Inject
-    @ConfigProperties
-    AccessTokenProperties accessTokenProperties;
+    @Autowired
+    private AccessTokenProperties accessTokenProperties;
 
-    @Inject
-    @ConfigProperties
-    DnsApiProperties ddnsApiProperties;
+    @Autowired
+    private DnsApiProperties ddnsApiProperties;
 
-    @Inject
-    ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void testGetProperties() {
@@ -52,9 +48,9 @@ public class AliyunDnsApiTest {
         // 建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378657.html。
         Config config = new Config()
                 // 必填，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_ID。
-                .setAccessKeyId(aliyunProperties.getAccessKeyId())
+                .setAccessKeyId("")
                 // 必填，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_SECRET。
-                .setAccessKeySecret(aliyunProperties.getAccessKeySecret());
+                .setAccessKeySecret("");
         // Endpoint 请参考 https://api.aliyun.com/product/Alidns
         config.endpoint = aliyunProperties.getEndpoint();
         return new Client(config);
