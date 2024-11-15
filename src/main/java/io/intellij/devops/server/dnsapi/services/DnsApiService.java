@@ -23,6 +23,8 @@ public interface DnsApiService {
 
     List<String> domains();
 
+    List<String> domainAccessControlList();
+
     List<DescribeDomainsResponse> describeDomains();
 
     DescribeSubDomainRecordsResponse describeSubDomainRecords(String apiDomain,

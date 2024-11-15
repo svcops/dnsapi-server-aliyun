@@ -14,6 +14,7 @@ import com.aliyun.alidns20150109.models.UpdateDomainRecordRequest;
 import com.aliyun.alidns20150109.models.UpdateDomainRecordResponse;
 import com.aliyun.teaopenapi.models.Config;
 import io.intellij.devops.server.dnsapi.config.properties.AliyunProperties;
+import io.intellij.devops.server.dnsapi.config.properties.DnsApiProperties;
 import io.intellij.devops.server.dnsapi.services.DnsApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 public class DnsApiServiceImpl implements DnsApiService, InitializingBean {
     private final AliyunProperties aliyunProperties;
+    private final DnsApiProperties dnsApiProperties;
 
     private final List<Client> clients = new CopyOnWriteArrayList<>();
     private final Map<String, Client> clientMap = new ConcurrentHashMap<>();
@@ -56,6 +58,11 @@ public class DnsApiServiceImpl implements DnsApiService, InitializingBean {
     @Override
     public List<String> domains() {
         return this.domains;
+    }
+
+    @Override
+    public List<String> domainAccessControlList() {
+        return this.dnsApiProperties.getDomainAcl();
     }
 
     @Override

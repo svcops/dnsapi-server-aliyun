@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,10 +30,15 @@ import java.util.Map;
  */
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping("/dns/subDomain")
+@RequestMapping("/dns/domain")
 @Slf4j
 public class DnsController {
     private final DnsApiService dnsApiService;
+
+    @PostMapping("/acl")
+    public Result<List<String>> domainAccessControlList() {
+        return Result.ok(dnsApiService.domainAccessControlList());
+    }
 
     @PostMapping("/addRecord")
     public Result<AddDomainRecordResponseBody> addRecord(@RequestBody DnsRequest dnsRequest) {
