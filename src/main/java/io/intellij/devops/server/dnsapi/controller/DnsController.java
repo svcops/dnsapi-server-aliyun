@@ -57,6 +57,7 @@ public class DnsController {
         long pageNumber = Objects.isNull(dnsRequest.getPageNumber()) ? 1 : dnsRequest.getPageNumber();
         long pageSize = Objects.isNull(dnsRequest.getPageSize()) ? 10 : dnsRequest.getPageSize();
         log.info("getDomainRecords|domainName={}|pageNumber={}|pageSize={}|rrKeyWord={}|valueKeyWord={}", dnsRequest.getDomainName(), pageNumber, pageSize, dnsRequest.getRrKeyWord(), dnsRequest.getValueKeyWord());
+        this.aclCheck(dnsRequest.getDomainName());
         DescribeDomainRecordsRequest describeDomainRecordsRequest = new DescribeDomainRecordsRequest()
                 .setDomainName(dnsRequest.getDomainName())
                 .setPageNumber(pageNumber)
