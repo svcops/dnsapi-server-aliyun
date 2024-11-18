@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @Data
 @ConfigurationProperties(prefix = "aliyun")
 @Validated
+@Slf4j
 public class AliyunProperties {
     @NotBlank(message = "endpoint must not be blank")
     private String endpoint;
@@ -30,7 +32,7 @@ public class AliyunProperties {
 
     public void setAccessKeyList(String accessKeyListJson) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        this.accessKeyList = objectMapper.readValue(accessKeyListJson, new TypeReference<List<AccessKey>>() {
+        this.accessKeyList = objectMapper.readValue(accessKeyListJson, new TypeReference<>() {
         });
     }
 
