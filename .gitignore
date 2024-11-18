@@ -8,3 +8,5 @@ logs/
 mirror.sh
 
 *.http
+
+.xcodemap/

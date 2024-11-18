@@ -42,13 +42,8 @@ public class PageResult<T> extends Result<T> {
         this.totalPage = null;
     }
 
-
-    public static <T> PageResult<T> okPage(T data, Long pageNumber, Long pageSize, Long totalCount) {
+    public static <T> PageResult<T> ok(T data, Long pageNumber, Long pageSize, Long totalCount) {
         return new PageResult<T>(200, "", data, pageNumber, pageSize, totalCount);
-    }
-
-    public static <T> PageResult<T> failPage(String msg) {
-        return new PageResult<T>(9999, msg);
     }
 
 }

@@ -82,8 +82,7 @@ public class DnsController {
         Long rtPageSize = body.getPageSize();
         Long rtTotalCount = body.getTotalCount();
 
-        return PageResult.okPage(
-                body.getDomainRecords().getRecord().stream().map(record -> SimplifyDomainRecord.builder()
+        return PageResult.ok(body.getDomainRecords().getRecord().stream().map(record -> SimplifyDomainRecord.builder()
                         .type(record.getType())
                         .rr(record.getRR())
                         .domainName(record.getDomainName())
@@ -91,7 +90,10 @@ public class DnsController {
                         .ttl(record.getTTL())
                         .status(record.getStatus())
                         .build()
-                ).toList(), rtPageNumber, rtPageSize, rtTotalCount
+                ).toList(),
+                rtPageNumber,
+                rtPageSize,
+                rtTotalCount
         );
     }
 
