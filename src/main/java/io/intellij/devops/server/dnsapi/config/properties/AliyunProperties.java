@@ -22,7 +22,6 @@ import java.util.List;
 @Data
 @ConfigurationProperties(prefix = "aliyun")
 @Validated
-@Slf4j
 public class AliyunProperties {
     @NotBlank(message = "endpoint must not be blank")
     private String endpoint;
