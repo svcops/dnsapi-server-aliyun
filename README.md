@@ -15,16 +15,16 @@
 
 ## 环境变量说明
 
-| 环境变量                               | 说明                           | 示例值                               |
-|------------------------------------|------------------------------|-----------------------------------|
-| JAVA_OPTIONS                       | java启动参数                     | `-Xmx64M`                         |
-| SERVER_PORT                        | springmvc端口                  | `8080`                            |
-| ACCESS_TOKEN_KEY                   | ddns-server的token header的key | `access-token`                    |
-| ACCESS_TOKEN_LIST                  | ddns-server的token header的值列表 | `xxx,yyy,zzz`                     |
-| ENDPOINT                           | 请求API                        | `alidns.cn-shanghai.aliyuncs.com` |
-| ALIBABA_CLOUD_ACCESS_KEY_LIST      | 阿里云AccessKey JsonArray       | 无                                 |
-| DNS_API_DOMAIN_ACCESS_CONTROL_LIST | 阿里云解析的域名子集，用作控制              | `a.com,b.com `                    |
-| DNS_API_EXCLUDE_RR_LIST            | 不允许的域名解析列表                   | `ddns,api`                        |
+| 环境变量                               | 说明                           | 示例值                                                         |
+|------------------------------------|------------------------------|-------------------------------------------------------------|
+| JAVA_OPTIONS                       | java启动参数                     | `-Xmx64M`                                                   |
+| SERVER_PORT                        | springmvc端口                  | `8080`                                                      |
+| ACCESS_TOKEN_KEY                   | ddns-server的token header的key | `access-token`                                              |
+| ACCESS_TOKEN_LIST                  | ddns-server的token header的值列表 | `xxx,yyy,zzz`                                               |
+| ENDPOINT                           | 请求API                        | 默认 `alidns.cn-shanghai.aliyuncs.com`                        |
+| ALIBABA_CLOUD_ACCESS_KEY_LIST      | 阿里云AccessKey JsonArray       | `[{"id":"aaa","secret":"bbb"},{"id":"xxx","secret":"yyy"}]` |
+| DNS_API_DOMAIN_ACCESS_CONTROL_LIST | 阿里云解析的域名子集，用作控制              | `a.com,b.com `                                              |
+| DNS_API_EXCLUDE_RR_LIST            | 不允许的域名解析列表                   | `ddns,api`                                                  |
 
 ## `docker-compose`部署
 
@@ -97,17 +97,22 @@ Accept: application/json
 [ddns_curl.sh 文件](ddns_curl.sh)
 
 ```shell
-./ddns_curl.sh "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"
+./ddns_curl.sh "<dns_server_root_uri>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"
 ```
 
-- `dns_server_api`： dns-server 的 api
+- `dns_server_root_uri`： dns-server 的 root uri
+  - e.g. `http://localhost:8080/api`
 - `access-token_key` access-token 的 key
+  - e.g. `access-token`
 - `access-token_value` access-token 的 值
+  - e.g. `xxx`
 - `domainName` 域名
+  - e.g. `example.com`
 - `rr` 解析记录
+  - e.g. `ddns`
 
 **结合linux的定时任务(e.g. 每5分钟执行)**
 
 ```shell
-*/5 * * * * bash /opt/ddns_curl/ddns_curl.sh "<dns_server_api>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>" >>/opt/ddns_curl/ddns.log
+*/5 * * * * bash /opt/ddns_curl/ddns_curl.sh "<dns_server_root_uri>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>" >>/opt/ddns_curl/ddns.log
 ```

@@ -7,7 +7,7 @@ function log() {
   echo -e "$now - [ $remark ] $msg"
 }
 
-dnsapi_server_addr=$1
+dnsapi_server_root_uri=$1
 dnsapi_server_token_key=$2
 dnsapi_server_token_value=$3
 
@@ -20,7 +20,7 @@ function validate_param() {
     exit 1
   fi
 }
-validate_param $dnsapi_server_addr
+validate_param $dnsapi_server_root_uri
 validate_param $dnsapi_server_token_key
 validate_param $dnsapi_server_token_value
 validate_param $domainName
@@ -29,11 +29,13 @@ validate_param $rr
 # notice: use: /ddns/invokeGetIpAutomatic
 json_body="{\"domainName\":\"$domainName\",\"rr\":\"$rr\"}"
 
+ddns_api_url="$dnsapi_server_root_uri/ddns/invokeGetIpAutomatic"
+
 request_result=$(curl --connect-timeout 10 -m 20 \
   -X POST \
   -H "Content-Type: application/json" \
   -H "$dnsapi_server_token_key: $dnsapi_server_token_value" \
   -d "$json_body" \
-  $dnsapi_server_addr)
+  $ddns_api_url)
 
 log "ddns" "$request_result"
