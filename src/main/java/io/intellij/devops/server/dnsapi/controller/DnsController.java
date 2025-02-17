@@ -47,11 +47,24 @@ import java.util.Objects;
 public class DnsController {
     private final DnsApiService dnsApiService;
 
+    /**
+     * Retrieves the access control list (ACL) of domains.
+     *
+     * @return a {@code Result} object containing a list of domain access control entries as strings.
+     */
     @PostMapping("/acl")
     public Result<List<String>> domainAccessControlList() {
         return Result.ok(dnsApiService.domainAccessControlList());
     }
 
+    /**
+     * Retrieves a paginated list of simplified domain records based on the specified DNS request.
+     *
+     * @param dnsRequest the DNS request containing domainName, pagination details, and optional keyword filters
+     *                   to search based on RR (Resource Record) or value.
+     * @return a {@code PageResult} containing a list of simplified domain records along with pagination metadata
+     *         such as page number, page size, and the total count of records.
+     */
     @PostMapping("/getDomainRecords")
     public PageResult<List<SimplifyDomainRecord>> getDomainRecords(@RequestBody DnsRequest dnsRequest) {
         long pageNumber = Objects.isNull(dnsRequest.getPageNumber()) ? 1 : dnsRequest.getPageNumber();
@@ -115,6 +128,13 @@ public class DnsController {
 
     // 下面的都是subDomainRecords的操作
 
+    /**
+     * Adds a new DNS record based on the provided request data.
+     *
+     * @param dnsRequest The DNS request object containing the domain name, resource record (RR), type, and value for the DNS record to be added.
+     * @return A result wrapping the response body of the added domain record.
+     * @throws RuntimeException If the DNS record addition operation fails due to an error in the API call or response.
+     */
     @PostMapping("/addRecord")
     public Result<AddDomainRecordResponseBody> addRecord(@RequestBody DnsRequest dnsRequest) {
         log.info("addRecord|domainName={}|rr={}|type={}|value={}", dnsRequest.getDomainName(), dnsRequest.getRr(), dnsRequest.getType(), dnsRequest.getValue());
@@ -133,6 +153,13 @@ public class DnsController {
         return Result.ok(addDomainRecordResponse.getBody());
     }
 
+    /**
+     * Retrieves DNS records based on the provided DNS request.
+     *
+     * @param dnsRequest the DNS request object containing the domain name and resource record (rr).
+     * @return a result object containing the response body with the DNS subdomain records information.
+     * @throws RuntimeException if an error occurs while retrieving the DNS records.
+     */
     @PostMapping("/getRecords")
     public Result<DescribeSubDomainRecordsResponseBody> getRecords(@RequestBody DnsRequest dnsRequest) {
         log.info("getRecords|domainName={}|rr={}", dnsRequest.getDomainName(), dnsRequest.getRr());
@@ -149,6 +176,13 @@ public class DnsController {
         return Result.ok(body);
     }
 
+    /**
+     * Deletes DNS subdomain records for the specified domain.
+     *
+     * @param dnsRequest The request object containing the domain name and record identifier (RR) to be deleted.
+     * @return A Result object containing the response body of the delete operation, including details of the deleted records.
+     * @throws RuntimeException if the delete operation fails with an unexpected status code.
+     */
     @PostMapping("/deleteRecords")
     public Result<DeleteSubDomainRecordsResponseBody> deleteRecords(@RequestBody DnsRequest dnsRequest) {
         log.info("deleteRecords|domainName={}|rr={}", dnsRequest.getDomainName(), dnsRequest.getRr());
@@ -167,6 +201,18 @@ public class DnsController {
         return Result.ok(body);
     }
 
+    /**
+     * Deletes existing DNS subdomain records and then adds a new DNS record for the specified domain.
+     *
+     * @param dnsRequest The request containing the domain name, record type, record value,
+     *                   and other details necessary to perform the operations.
+     * @return A Result object containing a map with details of the deleted records and the newly added record.
+     *         The map includes:
+     *         - "deleteRecords": Response body of the delete operation.
+     *         - "addRecord": Response body of the add operation.
+     * @throws RuntimeException If either the delete operation or the add operation fails,
+     *                          a RuntimeException is thrown containing the corresponding error message.
+     */
     @PostMapping("/deleteThenAddRecord")
     public Result<Map<String, Object>> deleteThenAddRecord(@RequestBody DnsRequest dnsRequest) {
         log.info("deleteThenAddRecord|domainName={}|rr={}|type={}|value={}", dnsRequest.getDomainName(), dnsRequest.getRr(), dnsRequest.getType(), dnsRequest.getValue());

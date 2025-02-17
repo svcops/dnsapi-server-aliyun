@@ -35,6 +35,15 @@ public class DDnsController {
     private final DDnsService dDnsService;
     private final DnsApiProperties dnsApiProperties;
 
+    /**
+     * Invokes the dynamic DNS (DDNS) service with the provided request details.
+     * Validates the domain and IPv4 format before processing the request.
+     * Logs the request details and returns the response from the DDNS service.
+     *
+     * @param request the DDnsRequest object containing the domain name, resource record,
+     *                and IPv4 address for the DDNS operation
+     * @return a Result object containing a DDnsResponse with the outcome of the DDNS operation
+     */
     @PostMapping("/invoke")
     public Result<DDnsResponse> invoke(@RequestBody DDnsRequest request) {
         validateDomain(request.getDomainName(), request.getRr());
@@ -44,6 +53,15 @@ public class DDnsController {
         return Result.ok(dDnsService.ddns(request.getDomainName(), request.getRr(), request.getIpv4()));
     }
 
+    /**
+     * Invokes the dynamic DNS (DDNS) service by automatically extracting the IPv4 address
+     * from the provided HttpServletRequest. Combines the extracted IP with the domain name
+     * and resource record from the provided DDnsRequest to perform the DDNS operation.
+     *
+     * @param request the DDnsRequest object containing the domain name and resource record for the operation
+     * @param httpServletRequest the HttpServletRequest object from which the client IPv4 address is extracted
+     * @return a Result object containing a DDnsResponse with the outcome of the DDNS operation
+     */
     @PostMapping(value = {"/invokeGetIpAutomatic", "/invokeGetIpByHttpServletRequest"})
     public Result<DDnsResponse> invokeGetIpByHttpServletRequest(@RequestBody DDnsRequest request, HttpServletRequest httpServletRequest) {
         return invoke(DDnsRequest.builder().domainName(request.getDomainName()).rr(request.getRr()).ipv4(getRequestIp(httpServletRequest)).build());
