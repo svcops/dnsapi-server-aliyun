@@ -4,14 +4,22 @@ SHELL_FOLDER=$(cd "$(dirname "$0")" && pwd)
 cd "$SHELL_FOLDER"
 
 source <(curl -sSL https://gitlab.com/iprt/shell-basic/-/raw/main/build-project/basic.sh)
+export ROOT_URI=$ROOT_URI
+
 source <(curl -sSL $ROOT_URI/func/log.sh)
+source <(curl -sSL $ROOT_URI/func/ostype.sh)
+
+if is_windows;then
+  log_info "build" "build in windows"
+  export MSYS_NO_PATHCONV=1
+fi
 
 log_info "step 1" "gradle build jar"
 
 bash <(curl -sSL $ROOT_URI/gradle/build.sh) \
   -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.10.2-jdk21-jammy" \
-  -c "gradle_8.10.2-jdk21-jammy_cache" \
-  -x "gradle clean build -x test"
+  -c "gradle-cache" \
+  -x "gradle clean build -x test --info"
 
 jar_name="dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar"
 
