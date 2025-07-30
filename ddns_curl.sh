@@ -92,7 +92,7 @@ while [[ $attempt -le $retries ]]; do
     -w "HTTPSTATUS:%{http_code}" \
     -s "$ddns_api_url")
 
-  body=$(echo "$request_result" | sed -e 's/HTTPSTATUS:.*//g')
+  body="${request_result//HTTPSTATUS:*/}"
   status=$(echo "$request_result" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
   if [[ "$status" -eq 200 ]]; then
