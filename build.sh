@@ -14,7 +14,7 @@ if is_windows;then
   export MSYS_NO_PATHCONV=1
 fi
 
-log_info "step 1" "gradle build jar"
+log_info "step 1" "build project with gradle"
 
 bash <(curl -sSL $ROOT_URI/gradle/build.sh) \
   -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.10.2-jdk21-jammy" \
@@ -24,21 +24,18 @@ bash <(curl -sSL $ROOT_URI/gradle/build.sh) \
 jar_name="dnsapi-server-aliyun-1.0.0-SNAPSHOT.jar"
 
 if [ ! -f "build/libs/$jar_name" ]; then
-  log "validate" "$jar_name 不存在，打包失败，退出"
+  log_error "validate" "$jar_name 不存在，打包失败，退出"
   exit 1
 fi
 
-log "step 2" "docker build and push"
+log_info "step 2" "build docker image and push to registry"
 
-registry="registry.cn-shanghai.aliyuncs.com"
-
-#timestamp_tag=$(date +"%Y-%m-%d_%H-%M-%S")
-
+# timestamp_tag=$(date +"%Y-%m-%d_%H-%M-%S")
+# version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
 version="latest"
-#version="$(date '+%Y%m%d')_$(git rev-parse --short HEAD)"
 
 bash <(curl -sSL $ROOT_URI/docker/build.sh) \
-  -i "$registry/iproute/dnsapi-server-aliyun" \
+  -i "registry.cn-shanghai.aliyuncs.com/iproute/dnsapi-server-aliyun" \
   -v "$version" \
   -r "false" \
   -p "true"
