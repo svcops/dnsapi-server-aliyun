@@ -1,1 +1,1 @@
-*/5 * * * * ddns_curl.sh "$DNSAPI_ROOT_URI" "$DNSAPI_ACCESS_TOKEN_KEY" "$DNSAPI_ACCESS_TOKEN_VALUE" "$DOMAIN_NAME" "$RR" >> /var/log/ddns/ddns.log 2>&1
+* * * * * env >> /var/log/ddns/ddns.log
