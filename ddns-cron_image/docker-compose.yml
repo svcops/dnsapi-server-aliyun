@@ -1,0 +1,14 @@
+services:
+  ddns-cron:
+    image: registry.cn-shanghai.aliyuncs.com/iproute/ddns-cron
+    container_name: ddns-cron
+    restart: always
+    volumes:
+      - "./log:/var/log/ddns"
+    environment:
+      - TZ=Asia/Shanghai
+      - DNSAPI_ROOT_URI=
+      - DNSAPI_ACCESS_TOKEN_KEY=
+      - DNSAPI_ACCESS_TOKEN_VALUE=
+      - DOMAIN_NAME=
+      - RR=

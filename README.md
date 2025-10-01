@@ -94,7 +94,7 @@ Accept: application/json
 
 > **notice**: use endpoint `/ddns/invokeGetIpAutomatic`
 
-[ddns_curl.sh 文件](ddns_curl.sh)
+[ddns_curl.sh 文件](ddns-cron_image/ddns_curl.sh)
 
 ```shell
 ./ddns_curl.sh "<dns_server_root_uri>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"
