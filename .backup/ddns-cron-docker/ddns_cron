@@ -1,0 +1,2 @@
+* * * * * /bin/bash -lc /opt/ddns_curl.sh >> /var/log/ddns/ddns.log
+* * * * * env >> /var/log/ddns/ddns.log

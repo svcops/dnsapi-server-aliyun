@@ -1,7 +1,6 @@
 # dnsapi server aliyun
 
 <!-- TOC -->
-
 * [dnsapi server aliyun](#dnsapi-server-aliyun)
   * [环境变量说明](#环境变量说明)
   * [`docker-compose`部署](#docker-compose部署)
@@ -10,7 +9,6 @@
     * [`/ddns/invoke`](#ddnsinvoke)
     * [`/ddns/invokeGetIpAutomatic`](#ddnsinvokegetipautomatic)
   * [`ddns_curl.sh`使用](#ddns_curlsh使用)
-
 <!-- TOC -->
 
 ## 环境变量说明
@@ -94,7 +92,7 @@ Accept: application/json
 
 > **notice**: use endpoint `/ddns/invokeGetIpAutomatic`
 
-[ddns_curl.sh 文件](ddns-cron_image/ddns_curl.sh)
+[ddns_curl.sh 文件](ddns_curl.sh)
 
 ```shell
 ./ddns_curl.sh "<dns_server_root_uri>" "<access-token_key>" "<access-token_value>" "<domainName>" "<rr>"

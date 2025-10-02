@@ -1,0 +1,6 @@
+spring:
+  main:
+    web-application-type: none
+
+ddns:
+  cron: ${CRON:0 0/5 * * * ?}

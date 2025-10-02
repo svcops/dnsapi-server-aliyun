@@ -6,3 +6,6 @@ pluginManagement {
 }
 
 rootProject.name = "dnsapi-server-aliyun"
+
+include("dnsapi-server")
+include("ddns-cron")

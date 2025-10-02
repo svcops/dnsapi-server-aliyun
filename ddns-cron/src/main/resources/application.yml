@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: ddns-cron
+  profiles:
+    active: dev
+
+ddns:
+  root-uri: ${DNSAPI_ROOT_URI:}
+  access-token-key: ${DNSAPI_ACCESS_TOKEN_KEY:}
+  access-token-value: ${DNSAPI_ACCESS_TOKEN_VALUE:}
+  domain-name: ${DOMAIN_NAME:}
+  rr: ${RR:}
