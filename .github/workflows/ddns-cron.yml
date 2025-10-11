@@ -29,6 +29,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ddns-cron/Action.Dockerfile
+          file: ddns-cron/GithubActions.Dockerfile
           push: true
           tags: ${{ secrets.ALIYUN_REGISTRY }}/iproute/ddns-cron:latest
