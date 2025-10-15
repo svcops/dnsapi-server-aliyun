@@ -1,39 +1,63 @@
 #!/bin/bash
+set -e  # 出错立即退出
 # shellcheck disable=SC2164
+
 SHELL_FOLDER=$(cd "$(dirname "$0")" && pwd)
 cd "$SHELL_FOLDER"
 
 branch="main"
 
+# 可用关键字列表
 key_word_list=(
-  "build_ddns_cron"
-  "build_dnsapi_server"
+  "build_dnsapi-server"
+  "build_ddns-cron"
+  "build_all"
 )
 
-key_word="$1"
+# 如果没有提供参数，直接退出
+if [[ $# -eq 0 ]]; then
+  echo "⚠️  No keyword provided. Nothing to trigger."
+  echo "👉  Valid keywords are: ${key_word_list[*]}"
+  exit 0
+fi
 
-[[ -z "$key_word" ]] && {
-  key_word="build_ddns_cron"
-}
+# 参数即关键字
+key_words=("$@")
 
-[[ -n $Key_word ]] && {
+# 验证关键字
+invalid_keys=()
+for key_word in "${key_words[@]}"; do
   match=false
-  for tmp in "${key_word_list[@]}"; do
-    if [[ "$key_word" == "$tmp" ]]; then
-      key_word="$tmp"
+  for valid in "${key_word_list[@]}"; do
+    if [[ "$key_word" == "$valid" ]]; then
       match=true
+      break
     fi
   done
 
-  [[ $match == false ]] && {
-    echo "Invalid keyword. Valid keywords are: ${key_word_list[*]}"
-    exit 1
-  }
-}
+  if [[ $match == false ]]; then
+    invalid_keys+=("$key_word")
+  fi
+done
 
-# 切到你要触发的分支
-git checkout $branch
-# 创建一个空提交，提交信息包含触发关键字 "build_geo_data"
-git commit --allow-empty -m "GitHub Action Trigger: $key_word"
-# 推送到远端j
-git push origin $branch
+# 如果有非法关键字则退出
+if [[ ${#invalid_keys[@]} -gt 0 ]]; then
+  echo "❌ Invalid keyword(s): ${invalid_keys[*]}"
+  echo "   Valid keywords are: ${key_word_list[*]}"
+  exit 1
+fi
+
+# 拼接提交信息
+joined_keywords=$(IFS=' '; echo "${key_words[*]}")
+msg="GitHub Actions Trigger: ${joined_keywords} ($(date +'%Y-%m-%d %H:%M:%S'))"
+
+echo "✅ Using keywords: $joined_keywords"
+echo "🔄 Switching to branch: $branch"
+
+git checkout "$branch"
+
+# 创建空提交并推送
+git commit --allow-empty -m "$msg"
+git push origin "$branch"
+
+echo "🚀 Trigger pushed successfully!"
