@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: blog-publish-${{ github.ref }}    # 按分支分组
-  cancel-in-progress: true                 # 有新触发时取消同组在途运
+  group: build_ddns-cron-${{ github.ref }}    # 按分支分组
+  cancel-in-progress: true                    # 有新触发时取消同组在途运
 
 jobs:
   build-and-push:
