@@ -38,6 +38,7 @@ public class DDNSCronApplication {
         ThreadPoolTaskScheduler ts = new ThreadPoolTaskScheduler();
         ts.setPoolSize(2);
         ts.setThreadNamePrefix("ddns-schedule-");
+        ts.setVirtualThreads(true); // 自动使用虚拟线程执行任务
         ts.setRemoveOnCancelPolicy(true);
         ts.setAwaitTerminationSeconds(60);
         ts.setWaitForTasksToCompleteOnShutdown(true);
