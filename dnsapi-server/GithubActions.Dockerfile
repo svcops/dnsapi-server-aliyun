@@ -5,7 +5,7 @@ COPY . .
 
 RUN gradle clean dnsapi-server:build -x test --info
 
-FROM eclipse-temurin:21-jdk-jammy
+FROM eclipse-temurin:25-jdk-jammy
 
 RUN apt-get update && \
     export DEBIAN_FRONTEND=noninteractive && \

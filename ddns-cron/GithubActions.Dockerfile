@@ -3,7 +3,7 @@ WORKDIR /opt/build/
 COPY . .
 RUN gradle clean ddns-cron:build -x test --info
 
-FROM eclipse-temurin:21-jdk-jammy
+FROM eclipse-temurin:25-jdk-jammy
 RUN apt-get update && \
     export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y --no-install-recommends curl wget ca-certificates vim && \

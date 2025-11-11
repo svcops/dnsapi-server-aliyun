@@ -1,4 +1,4 @@
-FROM registry.cn-shanghai.aliyuncs.com/iproute/eclipse-temurin:21-jdk-jammy
+FROM registry.cn-shanghai.aliyuncs.com/iproute/eclipse-temurin:25-jdk-jammy
 
 LABEL org.opencontainers.image.authors="tech@intellij.io"
 
