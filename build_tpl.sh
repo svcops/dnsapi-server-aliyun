@@ -25,7 +25,7 @@ fi
 
 sub_project_gradle_path=$(echo "$sub_project_path" | sed 's/\//:/g')
 bash <(curl -sSL $ROOT_URI/gradle/build.sh) \
-  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:8.14-jdk21" \
+  -i "registry.cn-shanghai.aliyuncs.com/iproute/gradle:9.2-jdk25" \
   -c "gradle-cache" \
   -x "gradle clean $sub_project_gradle_path:build -x test --info"
 
