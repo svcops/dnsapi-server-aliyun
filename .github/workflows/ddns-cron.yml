@@ -19,11 +19,9 @@ jobs:
     name: Build and Push ddns-cron Docker Image
     # 支持手动构建和提交信息中存在关键字 build_ddns_cron
     if: >
-      ${{
-        github.event_name == 'workflow_dispatch' ||
-        contains(github.event.head_commit.message, 'build_ddns-cron') ||
-        contains(github.event.head_commit.message, 'build_all')
-      }}
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, 'build_ddns-cron') ||
+      contains(github.event.head_commit.message, 'build_all')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
