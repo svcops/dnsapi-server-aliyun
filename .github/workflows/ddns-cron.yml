@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "ddns-cron/**"
+      - ".github/workflows/ddns-cron.yml"
   workflow_dispatch:
 
 concurrency:
