@@ -21,7 +21,7 @@ import java.time.temporal.ChronoUnit;
 @EnableScheduling
 public class DDNSCronApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(DDNSCronApplication.class, args);
     }
 
